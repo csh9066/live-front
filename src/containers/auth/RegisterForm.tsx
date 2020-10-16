@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import ErrorMessage from '../../components/auth/ErrorMessage';
 import Button from '../../components/common/Button';
 import Input from '../../components/common/Input';
 import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../modules';
+import { registerAction } from '../../modules/user';
+import { useHistory } from 'react-router-dom';
 
 const schema = yup.object().shape({
   email: yup.string().email().required(),
@@ -16,7 +20,7 @@ const schema = yup.object().shape({
   nickname: yup.string().required(),
 });
 
-type RegisterForm = {
+export type RegisterFormType = {
   email: string;
   password: string;
   passwordCheck: string;
@@ -26,14 +30,30 @@ type RegisterForm = {
 type RegisterFormProps = {};
 
 function RegisterForm(props: RegisterFormProps) {
-  const { handleSubmit, errors, register } = useForm<RegisterForm>({
+  const { register: reigsterResult, user } = useSelector(
+    (state: RootState) => state.user
+  );
+  const dispatch = useDispatch();
+  const history = useHistory();
+
+  const { handleSubmit, errors, register } = useForm<RegisterFormType>({
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (form: RegisterForm) => {
-    console.log(form);
+  const onSubmit = (form: RegisterFormType) => {
+    dispatch(registerAction(form));
   };
 
+  const { error, success } = reigsterResult;
+
+  useEffect(() => {
+    if (success) {
+      alert('회원가입 성공');
+      history.push('/');
+    }
+  }, [success, history]);
+
+  if (user) return null;
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Input placeholder="이메일" type="text" name="email" ref={register} />
@@ -59,7 +79,7 @@ function RegisterForm(props: RegisterFormProps) {
         {errors.passwordCheck && '비밀번호가 일치하지 않습니다'}
       </ErrorMessage>
       <Input placeholder="닉네임" name="nickname" ref={register} />
-      <ErrorMessage>{errors.nickname && '닉네임을 입력해주세요'}</ErrorMessage>
+      <ErrorMessage>{error}</ErrorMessage>
       <Button type="submit" marginTop={30}>
         회원 가입
       </Button>
