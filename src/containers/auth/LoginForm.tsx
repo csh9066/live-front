@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import ErrorMessage from '../../components/auth/ErrorMessage';
 import Button from '../../components/common/Button';
 import Input from '../../components/common/Input';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../modules';
+import { loginAction } from '../../modules/user';
+import { useHistory } from 'react-router-dom';
 
 const schema = yup.object().shape({
   email: yup.string().email().required(),
@@ -13,16 +17,33 @@ const schema = yup.object().shape({
 
 type LoginFormProps = {};
 
-type LoginForm = {
+export type LoginFormType = {
   email: string;
   password: string;
 };
 
 function LoginForm(props: LoginFormProps) {
-  const { register, errors, handleSubmit } = useForm<LoginForm>({
+  const { login, user } = useSelector((state: RootState) => state.user);
+  const dispatch = useDispatch();
+  const history = useHistory();
+
+  const { register, errors, handleSubmit } = useForm<LoginFormType>({
     resolver: yupResolver(schema),
   });
-  const onSubmit = (form: LoginForm) => console.log(form);
+
+  const onSubmit = (form: LoginFormType) => {
+    dispatch(loginAction(form));
+  };
+
+  const { error, success } = login;
+
+  useEffect(() => {
+    if (success) {
+      history.push('/');
+    }
+  }, [success, history]);
+
+  if (user) return null;
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -36,9 +57,8 @@ function LoginForm(props: LoginFormProps) {
         name="password"
         ref={register}
       />
-      <ErrorMessage>
-        {errors.password && '비밀번호는 8~16 사이로 입력해주세요'}
-      </ErrorMessage>
+      <ErrorMessage>{error}</ErrorMessage>
+      {/* <ErrorMessage>{error && '이메일이나 비밀번호가 틀립니다.'}</ErrorMessage> */}
       <Button type="submit" marginTop={30}>
         로그인
       </Button>
