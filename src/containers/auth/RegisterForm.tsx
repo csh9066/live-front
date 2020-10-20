@@ -7,7 +7,7 @@ import Input from '../../components/common/Input';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../modules';
-import { registerAction } from '../../modules/user';
+import { registerActions } from '../../modules/user';
 import { useHistory } from 'react-router-dom';
 
 const schema = yup.object().shape({
@@ -41,7 +41,7 @@ function RegisterForm(props: RegisterFormProps) {
   });
 
   const onSubmit = (form: RegisterFormType) => {
-    dispatch(registerAction(form));
+    dispatch(registerActions.request(form));
   };
 
   const { error, success } = reigsterResult;
@@ -80,7 +80,7 @@ function RegisterForm(props: RegisterFormProps) {
       </ErrorMessage>
       <Input placeholder="닉네임" name="nickname" ref={register} />
       <ErrorMessage>{error}</ErrorMessage>
-      <Button type="submit" marginTop={30}>
+      <Button type="submit" marginTop={30} size="large" fullWidth>
         회원 가입
       </Button>
     </form>

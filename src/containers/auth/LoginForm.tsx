@@ -7,7 +7,7 @@ import Button from '../../components/common/Button';
 import Input from '../../components/common/Input';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../modules';
-import { loginAction } from '../../modules/user';
+import { loginActions } from '../../modules/user';
 import { useHistory } from 'react-router-dom';
 
 const schema = yup.object().shape({
@@ -32,16 +32,21 @@ function LoginForm(props: LoginFormProps) {
   });
 
   const onSubmit = (form: LoginFormType) => {
-    dispatch(loginAction(form));
+    dispatch(loginActions.request(form));
   };
 
-  const { error, success } = login;
+  const { error } = login;
 
   useEffect(() => {
-    if (success) {
+    if (user) {
       history.push('/');
+      try {
+        localStorage.setItem('user', JSON.stringify(user));
+      } catch (e) {
+        console.log('localstorage  not working');
+      }
     }
-  }, [success, history]);
+  }, [user, history]);
 
   if (user) return null;
 
@@ -58,8 +63,7 @@ function LoginForm(props: LoginFormProps) {
         ref={register}
       />
       <ErrorMessage>{error}</ErrorMessage>
-      {/* <ErrorMessage>{error && '이메일이나 비밀번호가 틀립니다.'}</ErrorMessage> */}
-      <Button type="submit" marginTop={30}>
+      <Button type="submit" marginTop={30} fullWidth size="large">
         로그인
       </Button>
     </form>
