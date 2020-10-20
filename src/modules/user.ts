@@ -1,10 +1,15 @@
-import { login } from './../../../live-backend/src/controllers/UserController';
-import { createUserRequest, loginRequest } from './../lib/api/user';
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { RegisterFormType } from '../containers/auth/RegisterForm';
-import { LoginFormType } from '../containers/auth/LoginForm';
+import {
+  checkUserRequest,
+  createUserRequest,
+  loginRequest,
+  logoutRequest,
+} from './../lib/api/user';
+import { createAction, createReducer } from '@reduxjs/toolkit';
+import { call, takeEvery } from 'redux-saga/effects';
+import createAsyncSaga from '../lib/utils/createAsyncSaga';
+import createAsyncActions from '../lib/utils/createAsyncActions';
 
-type User = {
+export type User = {
   id: number;
   email: string;
   nickname: string;
@@ -20,9 +25,11 @@ type ResponseResult = {
 type UserState = {
   user: User | null;
   login: ResponseResult;
-  resgitser: ResponseResult;
+  register: ResponseResult;
+  check: ResponseResult;
 };
-const initialState = {
+
+const initialState: UserState = {
   user: null,
   login: {
     error: null,
@@ -32,60 +39,122 @@ const initialState = {
     error: null,
     success: false,
   },
+  check: {
+    error: null,
+    success: false,
+  },
 };
+// export const loginAction = createAsyncThunk(
+//   'user/login',
+//   async (loginForm: LoginFormType, { rejectWithValue }) => {
+//     try {
+//       const response = await loginRequest(loginForm);
+//       return response.data;
+//     } catch (error) {
+//       return rejectWithValue(error.response.data);
+//     }
+//   }
+// );
 
-export const loginAction = createAsyncThunk(
-  'user/login',
-  async (loginForm: LoginFormType, { rejectWithValue }) => {
-    try {
-      const response = await loginRequest(loginForm);
-      return response.data;
-    } catch (error) {
-      return rejectWithValue(error.response.data);
-    }
+export const loginActions = createAsyncActions('user/LOIGN');
+export const registerActions = createAsyncActions('user/REGISTER');
+export const checkActions = createAsyncActions('user/CHECK');
+
+export const tempSetUser = createAction<User>('user/TEMP_SET_USER');
+export const logout = createAction('user/LOGOUT');
+
+function* logoutSaga() {
+  try {
+    yield call(logoutRequest);
+    localStorage.removeItem('user');
+  } catch (e) {
+    console.log(e);
   }
-);
+}
 
-export const registerAction = createAsyncThunk(
-  'user/register',
-  async (registerForm: RegisterFormType, { rejectWithValue }) => {
-    try {
-      const reeponse = await createUserRequest(registerForm);
-      return reeponse.data;
-    } catch (error) {
-      return rejectWithValue(error.response.data);
-    }
-  }
-);
+export function* userSaga() {
+  yield takeEvery(
+    loginActions.request.type,
+    createAsyncSaga(loginActions, loginRequest)
+  );
+  yield takeEvery(
+    registerActions.request.type,
+    createAsyncSaga(registerActions, createUserRequest)
+  );
+  yield takeEvery(
+    checkActions.request.type,
+    createAsyncSaga(checkActions, checkUserRequest)
+  );
+  yield takeEvery(logout, logoutSaga);
+}
 
-const user = createSlice({
-  name: 'user',
-  initialState,
-  reducers: {},
-  extraReducers: {
-    [loginAction.pending.type]: (state) => {
+const user = createReducer(initialState, (builder) => {
+  builder
+    .addCase(loginActions.request, (state, action) => {
       state.login.error = null;
       state.login.success = false;
-    },
-    [loginAction.fulfilled.type]: (state, action) => {
+    })
+    .addCase(loginActions.success, (state, action) => {
       state.user = action.payload;
       state.login.success = true;
-    },
-    [loginAction.rejected.type]: (state, action) => {
+    })
+    .addCase(loginActions.failure, (state, action) => {
       state.login.error = action.payload;
-    },
-    [registerAction.pending.type]: (state) => {
+    })
+    .addCase(registerActions.request, (state, action) => {
       state.register.error = null;
       state.register.success = false;
-    },
-    [registerAction.fulfilled.type]: (state) => {
+    })
+    .addCase(registerActions.success, (state, action) => {
       state.register.success = true;
-    },
-    [registerAction.rejected.type]: (state, action) => {
+    })
+    .addCase(registerActions.failure, (state, action) => {
       state.register.error = action.payload;
-    },
-  },
+    })
+    .addCase(checkActions.request, (state, action) => {
+      state.check.error = null;
+      state.check.success = false;
+    })
+    .addCase(checkActions.success, (state, action) => {
+      state.check.success = true;
+      state.user = action.payload;
+    })
+    .addCase(checkActions.failure, (state, action) => {
+      state.check.error = action.payload;
+    })
+    .addCase(tempSetUser, (state, aciton) => {
+      state.user = aciton.payload;
+    })
+    .addCase(logout, (state) => {
+      state.user = null;
+    });
+  // name: 'user',
+  // initialState,
+  // reducers: {
+  //   [loginActions.request.type]: (state) => {
+  //     state.login.error = null;
+  //     state.login.success = false;
+  //   },
+  //   [loginActions.success.type]: (state, action) => {
+  //     console.log(action.payload, 'ssibal');
+
+  //     state.user = action.payload;
+  //     state.login.success = true;
+  //   },
+  //   [loginActions.failure.type]: (state, action) => {
+  //     state.login.error = action.payload;
+  //   },
+  //   [registerActions.request.type]: (state) => {
+  //     state.register.error = null;
+  //     state.register.success = false;
+  //   },
+  //   [registerActions.success.type]: (state) => {
+  //     state.register.success = true;
+  //   },
+  //   [registerActions.failure.type]: (state, action) => {
+  //     state.register.error = action.payload;
+  //   },
+  // },
 });
 
-export const userActions = user.actions;
 export default user;
