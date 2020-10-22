@@ -121,6 +121,8 @@ const user = createReducer(initialState, (builder) => {
     })
     .addCase(checkActions.failure, (state, action) => {
       state.check.error = action.payload;
+      state.user = null;
+      localStorage.removeItem('user');
     })
     .addCase(tempSetUser, (state, aciton) => {
       state.user = aciton.payload;

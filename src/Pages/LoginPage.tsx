@@ -1,6 +1,6 @@
 import React from 'react';
-import AuthTemplate from '../components/auth/AuthTemplate';
-import LoginForm from '../containers/auth/LoginForm';
+import AuthTemplate from '../components/AuthTemplate';
+import LoginForm from '../containers/LoginForm';
 
 type LoginPageProps = {};
 

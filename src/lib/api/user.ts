@@ -1,5 +1,5 @@
-import { LoginFormType } from './../../containers/auth/LoginForm';
-import { RegisterFormType } from './../../containers/auth/RegisterForm';
+import { LoginFormType } from '../../containers/LoginForm';
+import { RegisterFormType } from '../../containers/RegisterForm';
 import client from './client';
 
 export const loginRequest = async (loginForm: LoginFormType) => {

@@ -2,12 +2,12 @@ import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import ErrorMessage from '../../components/auth/ErrorMessage';
-import Button from '../../components/common/Button';
-import Input from '../../components/common/Input';
+import ErrorMessage from '../components/ErrorMessage';
+import Button from '../components/Button';
+import Input from '../components/Input';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../modules';
-import { loginActions } from '../../modules/user';
+import { RootState } from '../modules';
+import { loginActions } from '../modules/user';
 import { useHistory } from 'react-router-dom';
 
 const schema = yup.object().shape({
