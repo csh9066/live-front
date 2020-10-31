@@ -8,6 +8,8 @@ import * as serviceWorker from './serviceWorker';
 import { configureStore } from '@reduxjs/toolkit';
 import createSagaMiddleware from 'redux-saga';
 import { checkActions, tempSetUser } from './modules/user';
+import 'antd/dist/antd.css';
+import 'react-quill/dist/quill.snow.css';
 
 const sagaMiddleware = createSagaMiddleware();
 

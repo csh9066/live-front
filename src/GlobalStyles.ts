@@ -10,7 +10,7 @@ const GlobalStyles = createGlobalStyle`
   body {
     height: 100%;
     font-family: 'Roboto', sans-serif;
-    background-color: #F8F9FA;
+    /* background-color: #F8F9FA;     */
   }
   
   button {
@@ -21,6 +21,15 @@ const GlobalStyles = createGlobalStyle`
     text-decoration: none;
     color: inherit;
   }
+  
+  strong {
+    font-weight: bold;
+  }
+  
+  em {
+    font-style: italic;
+  }
+  
 `;
 
 export default GlobalStyles;
