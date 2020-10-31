@@ -1,19 +1,7 @@
-import { LoginFormType } from '../../containers/LoginForm';
-import { RegisterFormType } from '../../containers/RegisterForm';
 import client from './client';
 
-export const loginRequest = async (loginForm: LoginFormType) => {
-  const response = await client.post('/user/login', loginForm);
-  return response;
-};
-
-export const createUserRequest = async (registerForm: RegisterFormType) => {
-  const response = await client.post('/user', registerForm);
-  return response;
-};
-
 export const checkUserRequest = async () => {
-  const response = await client.get('/user/check');
+  const response = await client.get('/auth/check');
   return response;
 };
 
