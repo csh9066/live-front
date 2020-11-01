@@ -1,7 +1,6 @@
 import { Layout } from 'antd';
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import AddFrinedModalContainer from '../containers/AddFrinedModalContainer';
 import ChatHeader from './ChatHeader';
 import ChatView from './ChatView';
 import ModalTemplate from './Modal/ModalTemplate';
@@ -27,16 +26,10 @@ const ChatFooter = styled.div`
 `;
 
 function AppLayout(props: AppLayoutProps) {
-  const [showAddFrinedModal, setShowAddFirendModal] = useState(false);
-
-  const onToggleFirendModal = () => {
-    setShowAddFirendModal(!showAddFrinedModal); 
-  };
-
   return (
     <>
       <StyledLayout>
-        <SideBar onToggleFirendModal={onToggleFirendModal} />
+        <SideBar />
         <Layout>
           <ChatHeader />
           <ChatView />
@@ -45,10 +38,6 @@ function AppLayout(props: AppLayoutProps) {
           </ChatFooter>
         </Layout>
       </StyledLayout>
-      <AddFrinedModalContainer
-        visible={showAddFrinedModal}
-        onCancel={onToggleFirendModal}
-      />
     </>
   );
 }
