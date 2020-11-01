@@ -9,13 +9,14 @@ const GlobalStyles = createGlobalStyle`
   }
   body {
     height: 100%;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Noto Sans KR', sans-serif;
     /* background-color: #F8F9FA;     */
   }
   
   button {
     border: 0;
     outline: 0;
+    background-color: inherit;
   }
   a {
     text-decoration: none;
