@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import { FaCaretDown } from 'react-icons/fa';
 import { GoPlus } from 'react-icons/go';
-import MenuItem from './MenuItem';
-import Avatar from 'antd/lib/avatar/avatar';
 
 type MenuProps = {
   title: string;

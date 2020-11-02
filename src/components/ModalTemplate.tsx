@@ -4,9 +4,10 @@ import React from 'react';
 import styled from 'styled-components';
 
 type ModalTemplateProps = ModalProps & {
-  onSubmit: () => void;
+  onSubmit?: (data: any) => void;
   title: string;
   children: React.ReactNode;
+  onCancel: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
 };
 
 const Title = styled.div`
@@ -16,6 +17,7 @@ const Title = styled.div`
 
 function ModalTemplate({
   onSubmit,
+  onCancel,
   children,
   title,
   ...props
@@ -23,6 +25,7 @@ function ModalTemplate({
   return (
     <Modal
       title={<Title>{title}</Title>}
+      onCancel={onCancel}
       footer={
         <Button type="primary" onClick={onSubmit}>
           보내기
