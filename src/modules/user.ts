@@ -1,8 +1,9 @@
-import { checkUserRequest, logoutRequest } from './../lib/api/user';
+import { checkLoggin, logout as fetchLogout } from '../lib/api/auth';
 import { createAction, createReducer } from '@reduxjs/toolkit';
 import { call, takeEvery } from 'redux-saga/effects';
 import createAsyncSaga from '../lib/utils/createAsyncSaga';
 import createAsyncActions from '../lib/utils/createAsyncActions';
+import { AxiosResponse } from 'axios';
 
 export type User = {
   id: number;
@@ -13,22 +14,14 @@ export type User = {
   createdAt: Date;
 };
 
-type ResponseResult = {
-  error: string | null | undefined;
-  success: boolean;
-};
-
 type UserState = {
   user: User | null;
-  check: ResponseResult;
+  checkError: AxiosResponse | null;
 };
 
 const initialState: UserState = {
   user: null,
-  check: {
-    error: null,
-    success: false,
-  },
+  checkError: null,
 };
 
 export const checkActions = createAsyncActions('user/CHECK');
@@ -38,7 +31,7 @@ export const logout = createAction('user/LOGOUT');
 
 function* logoutSaga() {
   try {
-    yield call(logoutRequest);
+    yield call(fetchLogout);
     localStorage.removeItem('user');
   } catch (e) {
     console.log(e);
@@ -48,7 +41,7 @@ function* logoutSaga() {
 export function* userSaga() {
   yield takeEvery(
     checkActions.request.type,
-    createAsyncSaga(checkActions, checkUserRequest)
+    createAsyncSaga(checkActions, checkLoggin)
   );
   yield takeEvery(logout, logoutSaga);
 }
@@ -56,16 +49,14 @@ export function* userSaga() {
 const user = createReducer(initialState, (builder) => {
   builder
     .addCase(checkActions.request, (state, action) => {
-      state.check.error = null;
-      state.check.success = false;
+      state.checkError = null;
     })
     .addCase(checkActions.success, (state, action) => {
-      state.check.success = true;
       state.user = action.payload;
       localStorage.setItem('user', JSON.stringify(action.payload));
     })
     .addCase(checkActions.failure, (state, action) => {
-      state.check.error = action.payload;
+      state.checkError = action.payload;
       state.user = null;
       localStorage.removeItem('user');
     })
