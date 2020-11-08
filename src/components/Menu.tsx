@@ -38,6 +38,7 @@ const MenuTitle = styled.div<{ select: boolean }>`
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
 
     &:hover {
       background: rgb(193, 182, 192, 0.12);

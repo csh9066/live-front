@@ -4,38 +4,39 @@ import ChannelList from '../components/ChannelList';
 import FriendList from '../components/FriendList';
 import AddChannel from '../components/AddChannelModal';
 import AddFrined from '../components/AddFrinedModal';
+import { RootState } from '../modules';
+import { useDispatch, useSelector } from 'react-redux';
+import { addFreindActions } from '../modules/friends';
 
 type SideBarProps = {};
 
 function SideBar(props: SideBarProps) {
-  const [opendAddFriendModal, setOpendAddFriendModal] = useState(false);
-  const [opendAddChannelModal, setOpendAddChannelModal] = useState(false);
+  const [openAddFriendModal, setOpendAddFriendModal] = useState(false);
+  const [openAddChannelModal, setOpendAddChannelModal] = useState(false);
 
-  const onToggleAddChannelModal = (
-    e: React.MouseEvent<HTMLElement, MouseEvent>
-  ) => {
-    e.stopPropagation();
-    setOpendAddChannelModal(!opendAddChannelModal);
+  const { friends, addFriendError, addFriendSucceess } = useSelector(
+    (state: RootState) => state.freinds
+  );
+
+  const { user } = useSelector((state: RootState) => state.user);
+  const loading = useSelector((state: RootState) => state.loading);
+
+  const dispatch = useDispatch();
+
+  const onToggleAddChannelModal = () => {
+    setOpendAddChannelModal(!openAddChannelModal);
   };
 
-  const onToggleAddfriendModal = (
-    e: React.MouseEvent<HTMLElement, MouseEvent>
-  ) => {
-    e.stopPropagation();
-    setOpendAddFriendModal(!opendAddFriendModal);
+  const onToggleAddfriendModal = () => {
+    setOpendAddFriendModal(!openAddFriendModal);
   };
-  const friends: { nickname: string; imageUrl: string }[] = [
-    {
-      nickname: '최승호',
-      imageUrl:
-        'https://ca.slack-edge.com/T01D6JLRG4C-U01CTMS5LEA-7d0fd815bc41-24',
-    },
-    {
-      nickname: '김수꾸리',
-      imageUrl:
-        'https://ca.slack-edge.com/T01D6JLRG4C-U01CWG8GZUN-g452c5c6d38b-24',
-    },
-  ];
+
+  const onSubmitAddFriendForm = (email: string) => {
+    dispatch(addFreindActions.request(email));
+  };
+
+  if (!user) return null;
+
   return (
     <>
       <Layout.Sider
@@ -44,17 +45,25 @@ function SideBar(props: SideBarProps) {
       >
         <ChannelList
           channels={['담소방', '일반 채널']}
-          openModal={onToggleAddChannelModal}
+          onOpenModal={onToggleAddChannelModal}
         />
-        <FriendList freinds={friends} openModal={onToggleAddfriendModal} />
+        <FriendList
+          freinds={friends}
+          me={user}
+          onOpenModal={onToggleAddfriendModal}
+        />
       </Layout.Sider>
       <AddChannel
-        onCancel={onToggleAddChannelModal}
-        visible={opendAddChannelModal}
+        onToggle={onToggleAddChannelModal}
+        visible={openAddChannelModal}
       />
       <AddFrined
-        visible={opendAddFriendModal}
-        onCancel={onToggleAddfriendModal}
+        visible={openAddFriendModal}
+        isSuccess={addFriendSucceess}
+        error={addFriendError}
+        onToggle={onToggleAddfriendModal}
+        onSubmit={onSubmitAddFriendForm}
+        loading={loading[addFreindActions.type]}
       />
     </>
   );

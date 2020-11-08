@@ -1,10 +1,9 @@
 import { Layout } from 'antd';
 import React from 'react';
 import styled from 'styled-components';
+import SideBar from '../containers/SideBar';
 import ChatHeader from './ChatHeader';
 import ChatView from './ChatView';
-import ModalTemplate from './Modal/ModalTemplate';
-import SideBar from './SideBar';
 import WriteComment from './WriteComment';
 
 type AppLayoutProps = {};

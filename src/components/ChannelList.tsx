@@ -5,16 +5,30 @@ import MenuItem from './MenuItem';
 
 type ChannelListProps = {
   channels: string[];
-  openModal: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
+  onOpenModal: () => void;
 };
 
-function ChannelList({ channels, openModal }: ChannelListProps) {
+function ChannelList({ channels, onOpenModal }: ChannelListProps) {
   return (
-    <Menu title="채널" onOpenModal={openModal}>
+    <Menu
+      title="채널"
+      onOpenModal={(e) => {
+        e.stopPropagation();
+        onOpenModal();
+      }}
+    >
       {channels.map((channel) => (
         <MenuItem title={channel} key={channel} />
       ))}
-      <MenuItem title="채널 추가" isChannel={false} icon={<TiPlus />} />
+      <MenuItem
+        title="채널 추가"
+        isChannel={false}
+        icon={<TiPlus />}
+        onOpenModal={(e) => {
+          e.stopPropagation();
+          onOpenModal();
+        }}
+      />
     </Menu>
   );
 }

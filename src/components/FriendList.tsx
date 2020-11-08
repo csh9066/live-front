@@ -3,24 +3,45 @@ import Menu from './Menu';
 import MenuItem from './MenuItem';
 import { TiPlus } from 'react-icons/ti';
 import { Avatar } from 'antd';
+import { User } from '../modules/user';
 
 type FriendListProps = {
-  freinds: { nickname: string; imageUrl: string }[];
-  openModal: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
+  me: User;
+  freinds: User[];
+  onOpenModal: () => void;
 };
 
-function FriendList({ freinds, openModal }: FriendListProps) {
+function FriendList({ me, freinds, onOpenModal }: FriendListProps) {
   return (
-    <Menu title="다이렉트 메시지" onOpenModal={openModal}>
+    <Menu
+      title="다이렉트 메시지"
+      onOpenModal={(e) => {
+        e.stopPropagation();
+        onOpenModal();
+      }}
+    >
+      <MenuItem
+        title={me.nickname}
+        isChannel={false}
+        icon={<Avatar src={me.profileImageUrl} shape="square" />}
+      />
       {freinds.map((freind) => (
         <MenuItem
           key={freind.nickname}
           title={freind.nickname}
           isChannel={false}
-          icon={<Avatar src={freind.imageUrl} shape="square" />}
+          icon={<Avatar src={freind.profileImageUrl} shape="square" />}
         />
       ))}
-      <MenuItem title="친구 추가" isChannel={false} icon={<TiPlus />} />
+      <MenuItem
+        title="친구 추가"
+        isChannel={false}
+        icon={<TiPlus />}
+        onOpenModal={(e) => {
+          e.stopPropagation();
+          onOpenModal();
+        }}
+      />
     </Menu>
   );
 }
