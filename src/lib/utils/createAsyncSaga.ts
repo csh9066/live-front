@@ -10,12 +10,8 @@ function createAsyncSaga<P>(actions: AsyncActionGroup, api: any) {
     try {
       const response = yield call(api, action.payload);
       yield put(actions.success(response.data));
-    } catch (error) {
-      let err = error;
-      if (error.response) {
-        err = error.response.data;
-      }
-      yield put(actions.failure(err));
+    } catch (e) {
+      yield put(actions.failure(e));
     } finally {
       yield put(finishLoading(actions.type));
     }
