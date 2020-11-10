@@ -1,71 +1,59 @@
-import { checkLoggin, logout as fetchLogout } from '../lib/api/auth';
-import { createAction, createReducer } from '@reduxjs/toolkit';
-import { call, takeEvery } from 'redux-saga/effects';
-import createAsyncSaga from '../lib/utils/createAsyncSaga';
-import createAsyncActions from '../lib/utils/createAsyncActions';
-import { AxiosResponse } from 'axios';
+import { createSlice, Dispatch, PayloadAction } from '@reduxjs/toolkit';
+import AuthService from '../api/AuthService';
 
-export type User = {
+export interface IUser {
   id: number;
   email: string;
   nickname: string;
   provider: null | string;
   profileImageUrl: string;
   createdAt: Date;
-};
+}
 
-type UserState = {
-  user: User | null;
-  checkError: AxiosResponse | null;
-};
+interface IUserState {
+  user: IUser | null;
+}
 
-const initialState: UserState = {
+const initialState: IUserState = {
   user: null,
-  checkError: null,
 };
 
-export const checkActions = createAsyncActions('user/CHECK');
+// actions
 
-export const tempSetUser = createAction<User>('user/TEMP_SET_USER');
-export const logout = createAction('user/LOGOUT');
-
-function* logoutSaga() {
-  try {
-    yield call(fetchLogout);
-    localStorage.removeItem('user');
-  } catch (e) {
-    console.log(e);
-  }
-}
-
-export function* userSaga() {
-  yield takeEvery(
-    checkActions.request.type,
-    createAsyncSaga(checkActions, checkLoggin)
-  );
-  yield takeEvery(logout, logoutSaga);
-}
-
-const user = createReducer(initialState, (builder) => {
-  builder
-    .addCase(checkActions.request, (state, action) => {
-      state.checkError = null;
-    })
-    .addCase(checkActions.success, (state, action) => {
+const user = createSlice({
+  name: 'user',
+  initialState,
+  reducers: {
+    setUserInLocalStroage: (state, action: PayloadAction<IUser>) => {
       state.user = action.payload;
-      localStorage.setItem('user', JSON.stringify(action.payload));
-    })
-    .addCase(checkActions.failure, (state, action) => {
-      state.checkError = action.payload;
+    },
+    logout: (state) => {
       state.user = null;
-      localStorage.removeItem('user');
-    })
-    .addCase(tempSetUser, (state, aciton) => {
-      state.user = aciton.payload;
-    })
-    .addCase(logout, (state) => {
+    },
+    checkSuccess: (state, action: PayloadAction<IUser>) => {
+      state.user = action.payload;
+    },
+    checkFailure: (state) => {
       state.user = null;
-    });
+    },
+  },
 });
 
 export default user;
+
+export const {
+  logout,
+  setUserInLocalStroage,
+  checkSuccess,
+  checkFailure,
+} = user.actions;
+
+export const check = () => async (dispatch: Dispatch) => {
+  try {
+    const { data } = await AuthService.checkAuth();
+    dispatch(checkSuccess(data));
+  } catch (e) {
+    dispatch(checkFailure());
+    localStorage.removeItem('user');
+  }
+};

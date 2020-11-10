@@ -1,18 +1,14 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import { all } from 'redux-saga/effects';
-import freinds, { freindsSaga } from './friends';
-import loading from './loading';
-import user, { userSaga } from './user';
+import dm from './dm';
+import friends from './friends';
+import user from './user';
 
 const rootReducer = combineReducers({
-  user,
-  loading: loading.reducer,
-  freinds,
+  user: user.reducer,
+  friends: friends.reducer,
+  dm: dm.reducer,
 });
-export type RootState = ReturnType<typeof rootReducer>;
 
-export function* rootSaga() {
-  yield all([userSaga(), freindsSaga()]);
-}
+export type RootState = ReturnType<typeof rootReducer>;
 
 export default rootReducer;
