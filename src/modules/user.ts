@@ -1,5 +1,4 @@
-import { createSlice, Dispatch, PayloadAction } from '@reduxjs/toolkit';
-import AuthService from '../api/AuthService';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface IUser {
   id: number;
@@ -12,48 +11,29 @@ export interface IUser {
 
 interface IUserState {
   user: IUser | null;
+  isAuthenticated: boolean;
 }
 
 const initialState: IUserState = {
   user: null,
+  isAuthenticated: false,
 };
-
-// actions
 
 const user = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    setUserInLocalStroage: (state, action: PayloadAction<IUser>) => {
-      state.user = action.payload;
-    },
     logout: (state) => {
       state.user = null;
+      state.isAuthenticated = false;
     },
-    checkSuccess: (state, action: PayloadAction<IUser>) => {
+    check: (state, action: PayloadAction<IUser>) => {
+      state.isAuthenticated = true;
       state.user = action.payload;
-    },
-    checkFailure: (state) => {
-      state.user = null;
     },
   },
 });
 
 export default user;
 
-export const {
-  logout,
-  setUserInLocalStroage,
-  checkSuccess,
-  checkFailure,
-} = user.actions;
-
-export const check = () => async (dispatch: Dispatch) => {
-  try {
-    const { data } = await AuthService.checkAuth();
-    dispatch(checkSuccess(data));
-  } catch (e) {
-    dispatch(checkFailure());
-    localStorage.removeItem('user');
-  }
-};
+export const { logout, check } = user.actions;

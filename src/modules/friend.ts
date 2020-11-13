@@ -1,12 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IUser } from './user';
 
-export interface IFriends extends IUser {
+export interface IFriend extends IUser {
   countUnReadDm?: number;
 }
 
 interface IFriendsState {
-  friends: IFriends[];
+  friends: IFriend[];
 }
 
 const initialState: IFriendsState = {

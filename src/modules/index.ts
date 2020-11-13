@@ -1,12 +1,14 @@
 import { combineReducers } from '@reduxjs/toolkit';
 import dm from './dm';
-import friends from './friends';
+import friend from './friend';
+import modal from './modal';
 import user from './user';
 
 const rootReducer = combineReducers({
   user: user.reducer,
-  friends: friends.reducer,
+  friend: friend.reducer,
   dm: dm.reducer,
+  modal: modal.reducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
