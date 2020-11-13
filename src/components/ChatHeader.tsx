@@ -2,7 +2,10 @@ import { Badge } from 'antd';
 import React from 'react';
 import styled from 'styled-components';
 
-type ChatHeaderProps = {};
+type ChatHeaderProps = {
+  userName: string;
+  online: boolean;
+};
 
 const StyledChatHedaer = styled.div`
   display: flex;
@@ -19,12 +22,12 @@ const StyledChatHedaer = styled.div`
   }
 `;
 
-function ChatHeader(props: ChatHeaderProps) {
+function ChatHeader({ userName, online }: ChatHeaderProps) {
   return (
     <StyledChatHedaer>
       <div className="container">
-        <Badge dot status="success" offset={[0, 3]} />
-        <span className="user-id">최승호</span>
+        <Badge dot status={online ? 'success' : 'default'} offset={[0, 3]} />
+        <span className="user-id">{userName}</span>
       </div>
     </StyledChatHedaer>
   );

@@ -1,8 +1,11 @@
-import { Avatar, Comment, Divider, Image } from 'antd';
+import { Avatar, Comment, Divider } from 'antd';
 import React from 'react';
 import styled from 'styled-components';
+import { IDM } from '../modules/dm';
 
-type ChatViewProps = {};
+type ChatViewProps = {
+  messages: IDM[];
+};
 
 const StyledChatView = styled.div`
   flex: 1;
@@ -55,12 +58,29 @@ const StyledChatComment = styled(Comment)`
   }
 `;
 
-function ChatView(props: ChatViewProps) {
+function ChatView({ messages }: ChatViewProps) {
   return (
     <StyledChatView>
       <div className="scroll-container">
         <Divider>오늘</Divider>
-        <StyledChatComment
+        {messages.map((message) => (
+          <StyledChatComment
+            key={message.id}
+            author={
+              <span className="comment-author">{message.sender.nickname}</span>
+            }
+            avatar={
+              <Avatar
+                src={`${message.sender.profileImageUrl}`}
+                size="large"
+                shape="square"
+              />
+            }
+            content={message.content}
+            datetime={<span className="comment-date">오후 1:48</span>}
+          />
+        ))}
+        {/* <StyledChatComment
           author={<span className="comment-author">최승호</span>}
           avatar={
             <Avatar
@@ -166,7 +186,7 @@ function ChatView(props: ChatViewProps) {
             </p>
           }
           datetime={<span className="comment-date">오후 1:43 </span>}
-        />
+        /> */}
       </div>
     </StyledChatView>
   );

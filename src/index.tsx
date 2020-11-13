@@ -2,35 +2,19 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
-import App from './App';
-import rootReducer, { rootSaga } from './modules';
+
 import * as serviceWorker from './serviceWorker';
+import rootReducer from './modules';
 import { configureStore } from '@reduxjs/toolkit';
-import createSagaMiddleware from 'redux-saga';
-import { checkActions, tempSetUser } from './modules/user';
+
 import 'antd/dist/antd.css';
 import 'react-quill/dist/quill.snow.css';
-
-const sagaMiddleware = createSagaMiddleware();
+import App from './App';
 
 const store = configureStore({
   reducer: rootReducer,
   devTools: true,
-  middleware: [sagaMiddleware],
 });
-
-sagaMiddleware.run(rootSaga);
-
-function loadUser() {
-  try {
-    const user = localStorage.getItem('user');
-    store.dispatch(tempSetUser(user as any));
-    store.dispatch(checkActions.request('hi'));
-  } catch (e) {
-    console.log('locaStroage not working');
-  }
-}
-loadUser();
 
 ReactDOM.render(
   <BrowserRouter>

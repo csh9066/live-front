@@ -1,33 +1,24 @@
 import React from 'react';
 import { TiPlus } from 'react-icons/ti';
+import { FaHashtag } from 'react-icons/fa';
 import Menu from './Menu';
 import MenuItem from './MenuItem';
 
 type ChannelListProps = {
   channels: string[];
-  onOpenModal: () => void;
+  onOpenAddChannelModal: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
 };
 
-function ChannelList({ channels, onOpenModal }: ChannelListProps) {
+function ChannelList({ channels, onOpenAddChannelModal }: ChannelListProps) {
   return (
-    <Menu
-      title="채널"
-      onOpenModal={(e) => {
-        e.stopPropagation();
-        onOpenModal();
-      }}
-    >
+    <Menu title="채널" onClickPlusButton={onOpenAddChannelModal}>
       {channels.map((channel) => (
-        <MenuItem title={channel} key={channel} />
+        <MenuItem title={channel} key={channel} icon={<FaHashtag />} />
       ))}
       <MenuItem
         title="채널 추가"
-        isChannel={false}
         icon={<TiPlus />}
-        onOpenModal={(e) => {
-          e.stopPropagation();
-          onOpenModal();
-        }}
+        onClick={onOpenAddChannelModal}
       />
     </Menu>
   );

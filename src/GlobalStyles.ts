@@ -18,7 +18,7 @@ const GlobalStyles = createGlobalStyle`
     outline: 0;
     background-color: inherit;
   }
-  a {
+  a, a:hover {
     text-decoration: none;
     color: inherit;
   }

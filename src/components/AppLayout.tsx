@@ -1,12 +1,11 @@
 import { Layout } from 'antd';
 import React from 'react';
 import styled from 'styled-components';
-import SideBar from '../containers/SideBar';
-import ChatHeader from './ChatHeader';
-import ChatView from './ChatView';
-import WriteComment from './WriteComment';
+import SideBar from './SideBar';
 
-type AppLayoutProps = {};
+type AppLayoutProps = {
+  children: React.ReactNode;
+};
 
 const StyledLayout = styled(Layout)`
   position: absolute;
@@ -20,22 +19,12 @@ const StyledLayout = styled(Layout)`
   }
 `;
 
-const ChatFooter = styled.div`
-  padding: 0 20px 20px 20px;
-`;
-
-function AppLayout(props: AppLayoutProps) {
+function AppLayout({ children }: AppLayoutProps) {
   return (
     <>
       <StyledLayout>
         <SideBar />
-        <Layout>
-          <ChatHeader />
-          <ChatView />
-          <ChatFooter>
-            <WriteComment />
-          </ChatFooter>
-        </Layout>
+        <Layout>{children}</Layout>
       </StyledLayout>
     </>
   );

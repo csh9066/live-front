@@ -1,12 +1,10 @@
 import React from 'react';
-import { FaHashtag } from 'react-icons/fa';
 import styled from 'styled-components';
 
 type MenuItemProps = {
   icon?: React.ReactNode;
-  isChannel?: boolean;
   title: string;
-  onOpenModal?: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
+  onClick?: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
 };
 
 const StyledMenuitem = styled.li`
@@ -39,15 +37,10 @@ const StyledMenuitem = styled.li`
   }
 `;
 
-function MenuItem({
-  title,
-  icon,
-  isChannel = true,
-  onOpenModal,
-}: MenuItemProps) {
+function MenuItem({ title, icon, onClick }: MenuItemProps) {
   return (
-    <StyledMenuitem onClick={onOpenModal}>
-      <div className="icon-container">{isChannel ? <FaHashtag /> : icon}</div>
+    <StyledMenuitem onClick={onClick}>
+      <div className="icon-container">{icon}</div>
       <div className="title-text">{title}</div>
     </StyledMenuitem>
   );

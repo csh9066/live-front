@@ -6,7 +6,7 @@ const client = axios.create({
 });
 
 const AuthService = {
-  async checkAuth() {
+  async check() {
     return await client.get('/check');
   },
   async logout() {

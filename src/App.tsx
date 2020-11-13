@@ -1,16 +1,16 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
+import SoicalLogin from './components/SoicalLogin';
 import GlobalStyles from './GlobalStyles';
-import IndexPage from './Pages/IndexPage';
-import SoicalLoginPage from './Pages/SoicalLoginPage';
+import AppPage from './pages/AppPage';
 
 function App() {
   return (
     <>
       <GlobalStyles />
       <Switch>
-        <Route path="/" component={IndexPage} exact />
-        <Route path="/login" component={SoicalLoginPage} />
+        <Route path="/login" render={SoicalLogin} />
+        <Route path="/app" render={AppPage} />
       </Switch>
     </>
   );

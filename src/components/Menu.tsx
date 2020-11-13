@@ -6,7 +6,7 @@ import { GoPlus } from 'react-icons/go';
 type MenuProps = {
   title: string;
   children: React.ReactNode;
-  onOpenModal?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  onClickPlusButton?: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
 };
 
 const SideBarColor = {
@@ -65,7 +65,7 @@ const MenuTitle = styled.div<{ select: boolean }>`
   }
 `;
 
-function Menu({ title, children, onOpenModal }: MenuProps) {
+function Menu({ title, children, onClickPlusButton }: MenuProps) {
   const [titleSelect, setTitleSelect] = useState(false);
 
   const onToggleTitleSelect = () => {
@@ -79,7 +79,7 @@ function Menu({ title, children, onOpenModal }: MenuProps) {
           <FaCaretDown className="menu-care-down-i" />
         </button>
         <div className="title-text">{title}</div>
-        <button className="menu-button" onClick={onOpenModal}>
+        <button className="menu-button" onClick={onClickPlusButton}>
           <GoPlus className="menu-plus-i" />
         </button>
       </MenuTitle>
