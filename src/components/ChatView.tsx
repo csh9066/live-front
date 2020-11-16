@@ -76,7 +76,9 @@ function ChatView({ messages }: ChatViewProps) {
                 shape="square"
               />
             }
-            content={message.content}
+            content={
+              <div dangerouslySetInnerHTML={{ __html: message.content }} />
+            }
             datetime={<span className="comment-date">오후 1:48</span>}
           />
         ))}

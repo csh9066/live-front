@@ -3,7 +3,9 @@ import styled from 'styled-components';
 import { FaPaperPlane } from 'react-icons/fa';
 import { Tooltip } from 'antd';
 
-type ToolbarProps = {};
+type ToolbarProps = {
+  onClickSendButton: () => void;
+};
 
 const StyledToolbar = styled.div`
   background-color: #f0f0f0;
@@ -26,7 +28,7 @@ const TooltipText = styled.div`
   }
 `;
 
-function Toolbar(props: ToolbarProps) {
+function Toolbar({ onClickSendButton }: ToolbarProps) {
   return (
     <StyledToolbar id="toolbar">
       <div>
@@ -49,7 +51,10 @@ function Toolbar(props: ToolbarProps) {
         <button className="ql-image" />
       </div>
       <div className="right">
-        <button style={{ backgroundColor: '#007a5a' }}>
+        <button
+          style={{ backgroundColor: '#007a5a' }}
+          onClick={onClickSendButton}
+        >
           <FaPaperPlane className="tooblar-pp" />
         </button>
       </div>

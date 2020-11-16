@@ -19,7 +19,13 @@ function FriendList({ friends, onOpenAddFriendModal }: FriendListProps) {
           <MenuItem
             key={friend.id}
             title={friend.nickname}
-            icon={<Avatar src={friend.profileImageUrl} shape="square" />}
+            icon={
+              friend.profileImageUrl ? (
+                <Avatar src={friend.profileImageUrl} shape="square" />
+              ) : (
+                <Avatar shape="square">{friend.nickname[0]}</Avatar>
+              )
+            }
           />
         </Link>
       ))}

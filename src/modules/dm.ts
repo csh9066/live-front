@@ -29,9 +29,20 @@ const dm = createSlice({
         };
       },
     },
+    addDm: {
+      reducer(state, action: PayloadAction<IDM, string, number>) {
+        state[action.meta].push(action.payload);
+      },
+      prepare(payload: IDM, friendId: number) {
+        return {
+          payload,
+          meta: friendId,
+        };
+      },
+    },
   },
 });
 
 export default dm;
 
-export const { listDmByFriendId } = dm.actions;
+export const { listDmByFriendId, addDm } = dm.actions;

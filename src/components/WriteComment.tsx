@@ -1,9 +1,17 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import ReactQuill, { Quill } from 'react-quill';
 import styled from 'styled-components';
 import Toolbar from './Toolbar';
 
-type WriteCommentProps = {};
+type WriteCommentProps = {
+  chat: string;
+  onChangeChat: (chat: string) => void;
+  onSendMessage: () => void;
+};
+
+const Wrapper = styled.div`
+  padding: 15px;
+`;
 
 const StyledWriteComment = styled.div`
   border: 1px solid gray;
@@ -35,19 +43,17 @@ const StyledWriteComment = styled.div`
   }
 `;
 
-function WriteComment(props: WriteCommentProps) {
-  const [value, setvalue] = useState('');
-
+function WriteComment({
+  chat,
+  onChangeChat,
+  onSendMessage,
+}: WriteCommentProps) {
   let quillRef = useRef<ReactQuill | null>(null);
   let editor = useRef<Quill | null | undefined>(null);
 
   useEffect(() => {
     editor.current = quillRef.current?.getEditor();
   }, []);
-
-  const onChangeValue = (content: string) => {
-    setvalue(content);
-  };
 
   const modules = {
     toolbar: {
@@ -56,16 +62,18 @@ function WriteComment(props: WriteCommentProps) {
   };
 
   return (
-    <StyledWriteComment>
-      <ReactQuill
-        value={value}
-        onChange={onChangeValue}
-        modules={modules}
-        theme="snow"
-        ref={quillRef}
-      />
-      <Toolbar />
-    </StyledWriteComment>
+    <Wrapper>
+      <StyledWriteComment>
+        <ReactQuill
+          value={chat}
+          onChange={onChangeChat}
+          modules={modules}
+          theme="snow"
+          ref={quillRef}
+        />
+        <Toolbar onClickSendButton={onSendMessage} />
+      </StyledWriteComment>
+    </Wrapper>
   );
 }
 
