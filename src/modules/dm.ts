@@ -1,15 +1,8 @@
+import { IMessage } from './../typings/common';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IUser } from './user';
-
-export interface IDM {
-  id: number;
-  content: string;
-  sender: IUser;
-  images: { id: number; src: string } | null;
-}
 
 interface IDMState {
-  [friendId: number]: IDM[];
+  [friendId: number]: IMessage[];
 }
 
 const initialState: IDMState = {};
@@ -19,10 +12,10 @@ const dm = createSlice({
   initialState,
   reducers: {
     listDmByFriendId: {
-      reducer(state, action: PayloadAction<IDM[], string, number>) {
+      reducer(state, action: PayloadAction<IMessage[], string, number>) {
         state[action.meta] = action.payload;
       },
-      prepare(payload: IDM[], friendId: number) {
+      prepare(payload: IMessage[], friendId: number) {
         return {
           payload,
           meta: friendId,
@@ -30,10 +23,10 @@ const dm = createSlice({
       },
     },
     addDm: {
-      reducer(state, action: PayloadAction<IDM, string, number>) {
+      reducer(state, action: PayloadAction<IMessage, string, number>) {
         state[action.meta].push(action.payload);
       },
-      prepare(payload: IDM, friendId: number) {
+      prepare(payload: IMessage, friendId: number) {
         return {
           payload,
           meta: friendId,
