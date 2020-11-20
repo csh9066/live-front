@@ -17,6 +17,9 @@ const FriendsService = {
   async listDmByFriendId(friendId: number) {
     return await client.get(`/${friendId}/dm`);
   },
+  async sendDm(reciverId: number, content: string) {
+    return await client.post(`/${reciverId}/dm`, { content });
+  },
 };
 
 export default FriendsService;

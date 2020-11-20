@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import FriendsService from '../api/FriendsService';
 import { RootState } from '../modules';
-import { addFriend } from '../modules/friend';
+import { addFriend } from '../modules/friends';
 import { toggleAddFriendModal } from '../modules/modal';
 
 type AddFrinedModalProps = {};

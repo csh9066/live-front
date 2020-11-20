@@ -4,20 +4,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import FriendsService from '../api/FriendsService';
 import FriendList from '../components/FriendList';
 import { RootState } from '../modules';
-import { listFriends } from '../modules/friend';
+import { listFriends } from '../modules/friends';
 import { toggleAddFriendModal } from '../modules/modal';
 
 type FriendListContainerProps = {};
 
 function FriendListContainer(props: FriendListContainerProps) {
-  const friends = useSelector((state: RootState) => state.friend.friends);
+  const friends = useSelector((state: RootState) => state.friends);
 
   const dispatch = useDispatch();
 
   const fetchFriends = async () => {
     try {
-      const { data } = await FriendsService.listFriends();
-      dispatch(listFriends(data));
+      const response = await FriendsService.listFriends();
+      dispatch(listFriends(response.data));
     } catch (e) {
       message.error(e.resopnse.data);
     }

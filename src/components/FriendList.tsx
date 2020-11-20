@@ -4,7 +4,7 @@ import MenuItem from './MenuItem';
 import { TiPlus } from 'react-icons/ti';
 import { Avatar } from 'antd';
 import { Link } from 'react-router-dom';
-import { IFriend } from '../modules/friend';
+import { IFriend } from '../modules/friends';
 
 type FriendListProps = {
   friends: IFriend[];

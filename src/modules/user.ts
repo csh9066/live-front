@@ -5,7 +5,7 @@ export interface IUser {
   email: string;
   nickname: string;
   provider: null | string;
-  profileImageUrl: string;
+  profileImageUrl?: string;
   createdAt: Date;
 }
 
