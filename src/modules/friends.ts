@@ -5,23 +5,17 @@ export interface IFriend extends IUser {
   countUnReadDm?: number;
 }
 
-interface IFriendsState {
-  friends: IFriend[];
-}
-
-const initialState: IFriendsState = {
-  friends: [],
-};
+const initialState: IFriend[] = [];
 
 const friends = createSlice({
   name: 'friends',
   initialState,
   reducers: {
     listFriends(state, action: PayloadAction<IUser[]>) {
-      state.friends = action.payload;
+      state.push(...action.payload);
     },
     addFriend(state, action: PayloadAction<IUser>) {
-      state.friends.push(action.payload);
+      state.push(action.payload);
     },
   },
 });
