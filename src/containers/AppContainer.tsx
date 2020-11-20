@@ -5,10 +5,13 @@ import AuthService from '../api/AuthService';
 import AppLayout from '../components/AppLayout';
 import GlobalStyles from '../GlobalStyles';
 import { RootState } from '../modules';
-import { addDm, IDM } from '../modules/dm';
+import { addDm } from '../modules/dm';
 import { check } from '../modules/user';
 import socket from '../socket';
+import { IMessage } from '../typings/common';
+import AddChannelModal from './AddChannelModal';
 import AddFrinedModal from './AddFrinedModal';
+import ChannelChatContainer from './ChannelChatContainer';
 import DMContianer from './DMContianer';
 
 type AppContainerProps = {};
@@ -30,7 +33,7 @@ function AppContainer(props: AppContainerProps) {
   useEffect(() => {
     authenticate();
     socket.connect();
-    socket.on('receive dm', (dm: IDM) => {
+    socket.on('receive dm', (dm: IMessage) => {
       dispatch(addDm(dm, dm.sender.id));
     });
     return () => {
@@ -58,9 +61,11 @@ function AppContainer(props: AppContainerProps) {
             component={() => <Link to="/">인덱스</Link>}
           />
           <Route path="/app/friends/:id" component={DMContianer} />
+          <Route path="/app/channels/:id" component={ChannelChatContainer} />
         </AppLayout>
       </Switch>
       <AddFrinedModal />
+      <AddChannelModal />
     </>
   );
 }

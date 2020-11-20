@@ -1,10 +1,12 @@
 import { Avatar, Comment, Divider } from 'antd';
 import React from 'react';
+import moment from 'moment';
+import 'moment/locale/ko';
 import styled from 'styled-components';
-import { IDM } from '../modules/dm';
+import { IMessage } from '../typings/common';
 
 type ChatViewProps = {
-  messages: IDM[];
+  messages: IMessage[];
 };
 
 const StyledChatView = styled.div`
@@ -79,116 +81,13 @@ function ChatView({ messages }: ChatViewProps) {
             content={
               <div dangerouslySetInnerHTML={{ __html: message.content }} />
             }
-            datetime={<span className="comment-date">오후 1:48</span>}
+            datetime={
+              <span className="comment-date">
+                {moment(message.createdAt).format('LT')}
+              </span>
+            }
           />
         ))}
-        {/* <StyledChatComment
-          author={<span className="comment-author">최승호</span>}
-          avatar={
-            <Avatar
-              src={
-                'https://ca.slack-edge.com/T01D6JLRG4C-U01CTMS5LEA-7d0fd815bc41-48'
-              }
-              size="large"
-              shape="square"
-            />
-          }
-          content={
-            <p>
-              We supply a series of design principles, practical patterns and
-              high quality design resources (Sketch and Axure), to help people
-              create their product prototypes beautifully and efficiently.
-            </p>
-          }
-          datetime={<span className="comment-date">오후 1:48</span>}
-        />
-        <StyledChatComment
-          author={<span className="comment-author">최승호</span>}
-          avatar={
-            <Avatar
-              src={
-                'https://ca.slack-edge.com/T01D6JLRG4C-U01CTMS5LEA-7d0fd815bc41-48'
-              }
-              size="large"
-              shape="square"
-            />
-          }
-          content={
-            <p>
-              We supply a series of design principles, practical patterns and
-              high quality design resources (Sketch and Axure), to help people
-              create their product prototypes beautifully and efficiently.
-            </p>
-          }
-          datetime={<span className="comment-date">오후 1:48</span>}
-        />
-        <StyledChatComment
-          author={<span className="comment-author">최승호</span>}
-          avatar={
-            <Avatar
-              src={
-                'https://ca.slack-edge.com/T01D6JLRG4C-U01CTMS5LEA-7d0fd815bc41-48'
-              }
-              size="large"
-              shape="square"
-            />
-          }
-          content={
-            <>
-              <p>
-                We supply a series of design principles, practical patterns and
-                high quality design resources (Sketch and Axure), to help people
-                create their product prototypes beautifully and efficiently.
-              </p>
-              <Image
-                src={`${process.env.PUBLIC_URL}/image.png`}
-                width={200}
-                style={{ border: '1px solid #ddd' }}
-              />
-            </>
-          }
-          datetime={<span className="comment-date">오후 1:48</span>}
-        />
-        <StyledChatComment
-          author={<span className="comment-author">최승호</span>}
-          avatar={
-            <Avatar
-              src={
-                'https://ca.slack-edge.com/T01D6JLRG4C-U01CTMS5LEA-7d0fd815bc41-48'
-              }
-              size="large"
-              shape="square"
-            />
-          }
-          content={
-            <p>
-              We supply a series of design principles, practical patterns and
-              high quality design resources (Sketch and Axure), to help people
-              create their product prototypes beautifully and efficiently.
-            </p>
-          }
-          datetime={<span className="comment-date">오후 1:48</span>}
-        />
-        <StyledChatComment
-          author={<span className="comment-author">최승호</span>}
-          avatar={
-            <Avatar
-              src={
-                'https://ca.slack-edge.com/T01D6JLRG4C-U01CTMS5LEA-7d0fd815bc41-48'
-              }
-              size="large"
-              shape="square"
-            />
-          }
-          content={
-            <p>
-              We supply a series of design principles, practical patterns and
-              high quality design resources (Sketch and Axure), to help people
-              create their product prototypes beautifully and efficiently.
-            </p>
-          }
-          datetime={<span className="comment-date">오후 1:43 </span>}
-        /> */}
       </div>
     </StyledChatView>
   );
