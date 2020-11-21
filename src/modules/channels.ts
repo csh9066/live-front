@@ -20,9 +20,22 @@ const channels = createSlice({
     addChannel(state, action: PayloadAction<IChannel>) {
       state.push(action.payload);
     },
+    addChannelMembers: {
+      reducer(state, action: PayloadAction<IUser[], string, number>) {
+        state
+          .find((channel) => channel.id === action.meta)
+          ?.member.push(...action.payload);
+      },
+      prepare(payload: IUser[], channelId: number) {
+        return {
+          payload,
+          meta: channelId,
+        };
+      },
+    },
   },
 });
 
 export default channels;
 
-export const { listChannels, addChannel } = channels.actions;
+export const { listChannels, addChannel, addChannelMembers } = channels.actions;

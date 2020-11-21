@@ -7,6 +7,8 @@ import ChatView from '../components/ChatView';
 import WriteComment from '../components/WriteComment';
 import { RootState } from '../modules';
 import { addChat, listChats } from '../modules/channelChats';
+import { toggleAddMemberModal } from '../modules/modal';
+import AddMemberModal from './AddMemberModal';
 
 type ChannelChatContainerProps = {};
 
@@ -43,7 +45,9 @@ function ChannelChatContainer(props: ChannelChatContainerProps) {
     }
   };
 
-  const onOpenAddMemberModal = () => {};
+  const onOpenAddMemberModal = () => {
+    dispatch(toggleAddMemberModal());
+  };
 
   useEffect(() => {
     if (!channelChats[channelId]) {
@@ -68,6 +72,7 @@ function ChannelChatContainer(props: ChannelChatContainerProps) {
         onChangeChat={onChangeChat}
         onSendMessage={onSendMeesage}
       />
+      <AddMemberModal />
     </>
   );
 }

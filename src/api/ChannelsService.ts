@@ -18,6 +18,9 @@ const ChannelsService = {
   async sendChannelChat(id: number, content: string) {
     return await client.post(`/${id}/chats`, { content });
   },
+  async addChannelMembers(id: number, userEmails: string[]) {
+    return await client.post(`/${id}/members`, { emails: userEmails });
+  },
 };
 
 export default ChannelsService;

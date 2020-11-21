@@ -3,11 +3,13 @@ import { createSlice } from '@reduxjs/toolkit';
 interface IModalState {
   addFriendModalVisible: boolean;
   addChannelModalVisible: boolean;
+  addMemberModalVisible: boolean;
 }
 
 const initialState: IModalState = {
   addFriendModalVisible: false,
   addChannelModalVisible: false,
+  addMemberModalVisible: false,
 };
 
 const modal = createSlice({
@@ -20,9 +22,16 @@ const modal = createSlice({
     toggleChannelModal(state) {
       state.addChannelModalVisible = !state.addChannelModalVisible;
     },
+    toggleAddMemberModal(state) {
+      state.addMemberModalVisible = !state.addMemberModalVisible;
+    },
   },
 });
 
 export default modal;
 
-export const { toggleAddFriendModal, toggleChannelModal } = modal.actions;
+export const {
+  toggleAddFriendModal,
+  toggleChannelModal,
+  toggleAddMemberModal,
+} = modal.actions;

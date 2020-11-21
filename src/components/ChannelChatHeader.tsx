@@ -35,10 +35,12 @@ const Wrapper = styled.div`
       justify-content: center;
       align-items: center;
       margin-left: 20px;
-      width: 30px;
-      height: 30px;
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+      border-radius: 8px;
       &:hover {
-        background-color: #e9ecef;
+        background-color: #f8f9fa;
       }
     }
   }
@@ -69,7 +71,7 @@ function ChannelChatHeader({
             </Avatar>
           </Avatar.Group>
           <div className="add-friend" onClick={onOpenAddMemberModal}>
-            <Tooltip placement="bottom" title="친구 추가">
+            <Tooltip placement="bottom" title="맴버 추가">
               <BsPersonPlus size="25" />
             </Tooltip>
           </div>
