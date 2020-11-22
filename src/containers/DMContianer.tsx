@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import FriendsService from '../api/FriendsService';
-import ChatHeaderTemplate from '../components/ChatHeaderTemplate';
 import ChatView from '../components/ChatView';
+import DMHeader from '../components/DMHeader';
 import WriteComment from '../components/WriteComment';
 import { RootState } from '../modules';
 import { listDmByFriendId, addDm } from '../modules/dm';
@@ -54,9 +54,7 @@ function DMContianer(props: DMContianerProps) {
 
   return (
     <>
-      <ChatHeaderTemplate>
-        <span>{currentFriend.nickname}</span>
-      </ChatHeaderTemplate>
+      <DMHeader friendNickName={currentFriend.nickname} />
       <ChatView messages={dm[friendId]} />
       <WriteComment
         chat={chat}
