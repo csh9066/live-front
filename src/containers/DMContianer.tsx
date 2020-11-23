@@ -5,6 +5,7 @@ import FriendsService from '../api/FriendsService';
 import ChatView from '../components/ChatView';
 import DMHeader from '../components/DMHeader';
 import WriteComment from '../components/WriteComment';
+import useSocket from '../hooks/useSocket';
 import { RootState } from '../modules';
 import { listDmByFriendId, addDm } from '../modules/dm';
 
@@ -17,6 +18,7 @@ function DMContianer(props: DMContianerProps) {
   const friends = useSelector((state: RootState) => state.friends);
   const currentFriend = friends.find((friend) => friend.id === friendId);
   const [chat, setChat] = useState<string>('');
+  const socket = useSocket();
 
   const dispatch = useDispatch();
 

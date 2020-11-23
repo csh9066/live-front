@@ -5,9 +5,11 @@ import ChannelsService from '../api/ChannelsService';
 import ChannelChatHeader from '../components/ChannelChatHeader';
 import ChatView from '../components/ChatView';
 import WriteComment from '../components/WriteComment';
+import useSocket, { SocketEvent } from '../hooks/useSocket';
 import { RootState } from '../modules';
 import { addChat, listChats } from '../modules/channelChats';
 import { toggleAddMemberModal } from '../modules/modal';
+import { IMessage } from '../typings/common';
 import AddMemberModal from './AddMemberModal';
 
 type ChannelChatContainerProps = {};
@@ -19,6 +21,7 @@ function ChannelChatContainer(props: ChannelChatContainerProps) {
   const channels = useSelector((state: RootState) => state.channels);
   const currentChannel = channels.find((channel) => channel.id === channelId);
   const [chat, setChat] = useState<string>('');
+  const socket = useSocket();
 
   const dispatch = useDispatch();
 
@@ -38,8 +41,7 @@ function ChannelChatContainer(props: ChannelChatContainerProps) {
   const onSendMeesage = async () => {
     setChat('');
     try {
-      const { data } = await ChannelsService.sendChannelChat(channelId, chat);
-      dispatch(addChat(data, channelId));
+      await ChannelsService.sendChannelChat(channelId, chat);
     } catch (e) {
       console.log(e);
     }
@@ -49,10 +51,22 @@ function ChannelChatContainer(props: ChannelChatContainerProps) {
     dispatch(toggleAddMemberModal());
   };
 
+  const reciveChat = ({
+    message,
+    channelId,
+  }: {
+    message: IMessage;
+    channelId: number;
+  }) => {
+    dispatch(addChat(message, channelId));
+  };
+
   useEffect(() => {
-    if (!channelChats[channelId]) {
-      fetchChannelChats();
-    }
+    fetchChannelChats();
+    socket?.on(SocketEvent.CHANNEL_CHAT, reciveChat);
+    return () => {
+      socket?.off(SocketEvent.CHANNEL_CHAT);
+    };
     // eslint-disable-next-line
   }, [channelId]);
 
@@ -63,7 +77,7 @@ function ChannelChatContainer(props: ChannelChatContainerProps) {
     <>
       <ChannelChatHeader
         title={currentChannel?.title}
-        inUsers={currentChannel?.member}
+        inUsers={currentChannel?.members}
         onOpenAddMemberModal={onOpenAddMemberModal}
       />
       <ChatView messages={channelChats[channelId]} />

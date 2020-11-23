@@ -5,7 +5,7 @@ export interface IChannel {
   id: number;
   title: string;
   created_at: Date;
-  member: IUser[];
+  members: IUser[];
 }
 
 const initialState: IChannel[] = [];
@@ -24,7 +24,7 @@ const channels = createSlice({
       reducer(state, action: PayloadAction<IUser[], string, number>) {
         state
           .find((channel) => channel.id === action.meta)
-          ?.member.push(...action.payload);
+          ?.members.push(...action.payload);
       },
       prepare(payload: IUser[], channelId: number) {
         return {

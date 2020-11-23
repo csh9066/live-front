@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import useSocket, { SocketEvent } from '../hooks/useSocket';
 import ChannelsService from '../api/ChannelsService';
 import ChannelList from '../components/ChannelList';
 import { RootState } from '../modules';
@@ -10,6 +11,7 @@ type ChannelListContainerProps = {};
 
 function ChannelListContainer(props: ChannelListContainerProps) {
   const channels = useSelector((state: RootState) => state.channels);
+  const socket = useSocket();
 
   const dispatch = useDispatch();
 
@@ -28,6 +30,13 @@ function ChannelListContainer(props: ChannelListContainerProps) {
       console.log(e);
     }
   };
+
+  useEffect(() => {
+    if (channels.length !== 0) {
+      const channlIds = channels.map((channel) => channel.id);
+      socket?.emit(SocketEvent.JOIN_CHANNELS, channlIds);
+    }
+  }, [channels, socket]);
 
   useEffect(() => {
     fetchChannels();
