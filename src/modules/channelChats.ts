@@ -24,7 +24,9 @@ const channelChats = createSlice({
     },
     addChat: {
       reducer(state, action: PayloadAction<IMessage, string, number>) {
-        state[action.meta].push(action.payload);
+        if (state[action.meta]) {
+          state[action.meta].push(action.payload);
+        }
       },
       prepare(payload: IMessage, channelId: number) {
         return {

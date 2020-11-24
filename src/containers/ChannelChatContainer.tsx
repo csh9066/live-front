@@ -5,10 +5,10 @@ import ChannelsService from '../api/ChannelsService';
 import ChannelChatHeader from '../components/ChannelChatHeader';
 import ChatView from '../components/ChatView';
 import WriteComment from '../components/WriteComment';
-import useSocket, { SocketEvent } from '../hooks/useSocket';
 import { RootState } from '../modules';
 import { addChat, listChats } from '../modules/channelChats';
 import { toggleAddMemberModal } from '../modules/modal';
+import socket, { SocketEvent } from '../socket';
 import { IMessage } from '../typings/common';
 import AddMemberModal from './AddMemberModal';
 
@@ -21,7 +21,6 @@ function ChannelChatContainer(props: ChannelChatContainerProps) {
   const channels = useSelector((state: RootState) => state.channels);
   const currentChannel = channels.find((channel) => channel.id === channelId);
   const [chat, setChat] = useState<string>('');
-  const socket = useSocket();
 
   const dispatch = useDispatch();
 
