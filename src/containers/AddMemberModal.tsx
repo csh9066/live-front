@@ -16,10 +16,10 @@ function AddMemberModal(props: AddMemberModalProps) {
   const friends = useSelector((state: RootState) => state.friends);
   const channels = useSelector((state: RootState) => state.channels);
   const currentChannel = channels.find((channel) => channel.id === channelId);
-  const memberIdInChannel =
-    currentChannel?.member.map((member) => member.id) || [];
+  const membersIdInChannel =
+    currentChannel?.members.map((member) => member.id) || [];
   const addableFriends = friends.filter(
-    (friend) => !memberIdInChannel.includes(friend.id)
+    (friend) => !membersIdInChannel.includes(friend.id)
   );
   const addMemberModalVisible = useSelector(
     (state: RootState) => state.modal.addMemberModalVisible
