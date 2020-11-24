@@ -6,8 +6,8 @@ export const SocketEvent = {
   CHANNEL_CHAT: 'CHANNEL_CHAT' as const,
   JOIN_CHANNELS: 'JOIN_CHANNELS' as const,
   JOIN_CHANNEL: 'JOIN_CHANNEL' as const,
-  ADD_CHANNEL_MEMBERS: 'ADD_CHANNEL_MEMBERS' as const,
   ADD_CHANNEL: 'ADD_CHANNEL' as const,
+  ADD_FRIEND: 'ADD_FRIEND' as const,
 };
 
 const socket = io(`${process.env.REACT_APP_SERVER_PORT}`, {

@@ -4,8 +4,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import FriendsService from '../api/FriendsService';
 import FriendList from '../components/FriendList';
 import { RootState } from '../modules';
-import { listFriends } from '../modules/friends';
+import { addFriend, listFriends } from '../modules/friends';
 import { toggleAddFriendModal } from '../modules/modal';
+import { IUser } from '../modules/user';
+import socket, { SocketEvent } from '../socket';
 
 type FriendListContainerProps = {};
 
@@ -32,6 +34,9 @@ function FriendListContainer(props: FriendListContainerProps) {
 
   useEffect(() => {
     fetchFriends();
+    socket.on(SocketEvent.ADD_FRIEND, (friend: IUser) => {
+      dispatch(addFriend(friend));
+    });
     // eslint-disable-next-line
   }, []);
 
