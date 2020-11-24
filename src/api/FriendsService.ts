@@ -11,7 +11,7 @@ const FriendsService = {
   },
 
   async addFriendByEmail(email: string) {
-    return await client.post(`/${email}`);
+    return await client.post(`/`, { email });
   },
 
   async listDmByFriendId(friendId: number) {
