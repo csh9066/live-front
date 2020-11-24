@@ -5,9 +5,10 @@ import FriendsService from '../api/FriendsService';
 import ChatView from '../components/ChatView';
 import DMHeader from '../components/DMHeader';
 import WriteComment from '../components/WriteComment';
-import useSocket from '../hooks/useSocket';
 import { RootState } from '../modules';
 import { listDmByFriendId, addDm } from '../modules/dm';
+import socket, { SocketEvent } from '../socket';
+import { IMessage } from '../typings/common';
 
 type DMContianerProps = {};
 
@@ -18,7 +19,6 @@ function DMContianer(props: DMContianerProps) {
   const friends = useSelector((state: RootState) => state.friends);
   const currentFriend = friends.find((friend) => friend.id === friendId);
   const [chat, setChat] = useState<string>('');
-  const socket = useSocket();
 
   const dispatch = useDispatch();
 
@@ -45,10 +45,22 @@ function DMContianer(props: DMContianerProps) {
     }
   };
 
+  const reciveDm = async ({
+    message,
+    senderId,
+  }: {
+    message: IMessage;
+    senderId: number;
+  }) => {
+    dispatch(addDm(message, senderId));
+  };
+
   useEffect(() => {
-    if (!dm[friendId]) {
-      fetchDm();
-    }
+    fetchDm();
+    socket?.on(SocketEvent.DM, reciveDm);
+    return () => {
+      socket?.off(SocketEvent.DM, reciveDm);
+    };
     // eslint-disable-next-line
   }, [friendId]);
 
