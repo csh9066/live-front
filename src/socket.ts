@@ -1,17 +1,17 @@
 import { io } from 'socket.io-client';
 
-export const SocketEvent = {
-  ONLINE: 'ONLINE' as const,
-  DM: 'DM' as const,
-  CHANNEL_CHAT: 'CHANNEL_CHAT' as const,
-  JOIN_CHANNELS: 'JOIN_CHANNELS' as const,
-  JOIN_CHANNEL: 'JOIN_CHANNEL' as const,
-  ADD_CHANNEL: 'ADD_CHANNEL' as const,
-  REMOVE_CHANNEL: 'REMOVE_CHANNEL' as const,
-  LEAVE_CHANNEL_MEMBER: 'LEAVE_CHANNEL_MEMBER' as const,
-  ADD_FRIEND: 'ADD_FRIEND' as const,
-  REMOVE_FRIEND: 'REMOVE_FRIEND' as const,
-};
+export enum SocketEvent {
+  ONLINE = 'ONLINE',
+  DM = 'DM',
+  CHANNEL_CHAT = 'CHANNEL_CHAT',
+  JOIN_CHANNELS = 'JOIN_CHANNELS',
+  JOIN_CHANNEL = 'JOIN_CHANNEL',
+  ADD_CHANNEL = 'ADD_CHANNEL',
+  REMOVE_CHANNEL = 'REMOVE_CHANNEL',
+  LEAVE_CHANNEL_MEMBER = 'LEAVE_CHANNEL_MEMBER',
+  ADD_FRIEND = 'ADD_FRIEND',
+  REMOVE_FRIEND = 'REMOVE_FRIEND',
+}
 
 const socket = io(`${process.env.REACT_APP_SERVER_PORT}`, {
   transports: ['websocket'],
