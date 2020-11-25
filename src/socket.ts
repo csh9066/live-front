@@ -8,6 +8,8 @@ export const SocketEvent = {
   JOIN_CHANNEL: 'JOIN_CHANNEL' as const,
   ADD_CHANNEL: 'ADD_CHANNEL' as const,
   ADD_FRIEND: 'ADD_FRIEND' as const,
+  REMOVE_CHANNEL: 'REMOVE_CHANNEL' as const,
+  LEAVE_CHANNEL_MEMBER: 'LEAVE_CHANNEL_MEMBER' as const,
 };
 
 const socket = io(`${process.env.REACT_APP_SERVER_PORT}`, {

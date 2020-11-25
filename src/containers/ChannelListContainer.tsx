@@ -3,7 +3,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import ChannelsService from '../api/ChannelsService';
 import ChannelList from '../components/ChannelList';
 import { RootState } from '../modules';
-import { addChannel, IChannel, listChannels } from '../modules/channels';
+import { removeChat } from '../modules/channelChats';
+import {
+  addChannel,
+  IChannel,
+  listChannels,
+  removeChannel,
+  removeChannelMember,
+} from '../modules/channels';
 import { toggleChannelModal } from '../modules/modal';
 import socket, { SocketEvent } from '../socket';
 
@@ -11,6 +18,7 @@ type ChannelListContainerProps = {};
 
 function ChannelListContainer(props: ChannelListContainerProps) {
   const channels = useSelector((state: RootState) => state.channels);
+  const user = useSelector((state: RootState) => state.user.user);
 
   const dispatch = useDispatch();
 
@@ -19,6 +27,18 @@ function ChannelListContainer(props: ChannelListContainerProps) {
   ) => {
     e.stopPropagation();
     dispatch(toggleChannelModal());
+  };
+
+  const onRemoveChannelById = async (channelId: number) => {
+    try {
+      const userId = user?.id as number;
+      await ChannelsService.removeChannelMember(channelId, userId);
+      dispatch(removeChannel(channelId));
+      dispatch(removeChat(channelId));
+      socket.emit(SocketEvent.REMOVE_CHANNEL, channelId);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const fetchChannels = async () => {
@@ -43,6 +63,12 @@ function ChannelListContainer(props: ChannelListContainerProps) {
       dispatch(addChannel(channel));
       socket.emit(SocketEvent.JOIN_CHANNEL, channel.id);
     });
+    socket.on(
+      SocketEvent.LEAVE_CHANNEL_MEMBER,
+      (memberId: number, channelId: number) => {
+        dispatch(removeChannelMember(memberId, channelId));
+      }
+    );
     //eslint-disable-next-line
   }, []);
 
@@ -50,6 +76,7 @@ function ChannelListContainer(props: ChannelListContainerProps) {
     <ChannelList
       channels={channels}
       onOpenAddChannelModal={onOpenAddChannelModal}
+      removeChannelById={onRemoveChannelById}
     />
   );
 }

@@ -35,9 +35,14 @@ const channelChats = createSlice({
         };
       },
     },
+    removeChat(state, aciton: PayloadAction<number>) {
+      if (state[aciton.payload]) {
+        delete state[aciton.payload];
+      }
+    },
   },
 });
 
 export default channelChats;
 
-export const { addChat, listChats } = channelChats.actions;
+export const { addChat, listChats, removeChat } = channelChats.actions;

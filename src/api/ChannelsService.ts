@@ -21,6 +21,9 @@ const ChannelsService = {
   async addChannelMembers(id: number, userEmails: string[]) {
     return await client.post(`/${id}/members`, { emails: userEmails });
   },
+  async removeChannelMember(channelId: number, memberId: number) {
+    return await client.delete(`/${channelId}/members/${memberId}`);
+  },
 };
 
 export default ChannelsService;
