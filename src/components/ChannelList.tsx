@@ -21,7 +21,7 @@ function ChannelList({
 }: ChannelListProps) {
   const showRemoveChannelConfirm = (channelId: number) => {
     confirm({
-      title: '정말 채널을 삭제 하시겠습니까?',
+      title: '정말 채널을 나가시겠습니까?',
       icon: <ExclamationCircleOutlined />,
       onOk() {
         removeChannelById(channelId);

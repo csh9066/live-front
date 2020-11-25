@@ -29,6 +29,7 @@ function AddChannelModal(props: AddChannelModalProps) {
       const { data } = await ChannelsService.addChannel(channelTitle);
       dispatch(addChannel(data));
       dispatch(toggleChannelModal());
+      setChannelTitle('');
     } catch (e) {
       console.log(e);
     }

@@ -9,11 +9,12 @@ const FriendsService = {
   async listFriends() {
     return await client.get('/');
   },
-
   async addFriendByEmail(email: string) {
     return await client.post(`/`, { email });
   },
-
+  async removeFriend(friendId: number) {
+    return await client.delete(`/${friendId}`);
+  },
   async listDmByFriendId(friendId: number) {
     return await client.get(`/${friendId}/dm`);
   },

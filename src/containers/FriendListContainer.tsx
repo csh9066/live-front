@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import FriendsService from '../api/FriendsService';
 import FriendList from '../components/FriendList';
 import { RootState } from '../modules';
-import { addFriend, listFriends } from '../modules/friends';
+import { addFriend, listFriends, removeFriend } from '../modules/friends';
 import { toggleAddFriendModal } from '../modules/modal';
 import { IUser } from '../modules/user';
 import socket, { SocketEvent } from '../socket';
@@ -32,16 +32,32 @@ function FriendListContainer(props: FriendListContainerProps) {
     dispatch(toggleAddFriendModal());
   };
 
+  const removeFriendById = async (friendId: number) => {
+    try {
+      await FriendsService.removeFriend(friendId);
+      dispatch(removeFriend(friendId));
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   useEffect(() => {
     fetchFriends();
     socket.on(SocketEvent.ADD_FRIEND, (friend: IUser) => {
       dispatch(addFriend(friend));
     });
+    socket.on(SocketEvent.REMOVE_FRIEND, (friendId: number) => {
+      dispatch(removeFriend(friendId));
+    });
     // eslint-disable-next-line
   }, []);
 
   return (
-    <FriendList friends={friends} onOpenAddFriendModal={onOpenAddFriendModal} />
+    <FriendList
+      friends={friends}
+      onOpenAddFriendModal={onOpenAddFriendModal}
+      removeFriendById={removeFriendById}
+    />
   );
 }
 
