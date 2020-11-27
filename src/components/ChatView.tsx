@@ -62,40 +62,57 @@ const StyledChatComment = styled(Comment)`
 `;
 
 function ChatView({ messages }: ChatViewProps) {
+  const messageDateSet = new Set();
+  messages.forEach((message) => {
+    const date = moment(message.createdAt).format('MM월 DD일');
+    messageDateSet.add(date);
+  });
+
   return (
     <StyledChatView>
       <div className="scroll-container">
-        <Divider>오늘</Divider>
-        {messages.map((message) => (
-          <StyledChatComment
-            key={message.id}
-            author={
-              <span className="comment-author">{message.sender.nickname}</span>
-            }
-            avatar={
-              <Avatar
-                src={`${message.sender.profileImageUrl}`}
-                size="large"
-                shape="square"
-              />
-            }
-            content={
-              <div>
-                <div dangerouslySetInnerHTML={{ __html: message.content }} />
-                {message.images.length > 0 && (
-                  <ChatImageList
-                    imageUrls={message.images.map((image) => image.src)}
+        {messages.map((message) => {
+          const date = moment(message.createdAt).format('MM월 DD일');
+          const hasDate = messageDateSet.has(date);
+          messageDateSet.delete(date);
+          return (
+            <React.Fragment key={message.id}>
+              {hasDate && <Divider>{date}</Divider>}
+              <StyledChatComment
+                key={message.id}
+                author={
+                  <span className="comment-author">
+                    {message.sender.nickname}
+                  </span>
+                }
+                avatar={
+                  <Avatar
+                    src={`${message.sender.profileImageUrl}`}
+                    size="large"
+                    shape="square"
                   />
-                )}
-              </div>
-            }
-            datetime={
-              <span className="comment-date">
-                {moment(message.createdAt).format('LT')}
-              </span>
-            }
-          />
-        ))}
+                }
+                content={
+                  <div>
+                    <div
+                      dangerouslySetInnerHTML={{ __html: message.content }}
+                    />
+                    {message.images.length > 0 && (
+                      <ChatImageList
+                        imageUrls={message.images.map((image) => image.src)}
+                      />
+                    )}
+                  </div>
+                }
+                datetime={
+                  <span className="comment-date">
+                    {moment(message.createdAt).format('LT')}
+                  </span>
+                }
+              />
+            </React.Fragment>
+          );
+        })}
       </div>
     </StyledChatView>
   );
