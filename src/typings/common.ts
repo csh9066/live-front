@@ -7,3 +7,8 @@ export interface IMessage {
   images: { id: number; src: string }[];
   createdAt: Date;
 }
+
+export interface SendMessage {
+  chat: string;
+  imageUrls?: string[];
+}

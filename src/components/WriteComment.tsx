@@ -1,12 +1,14 @@
-import React, { useEffect, useRef } from 'react';
+import { Upload } from 'antd';
+import { UploadChangeParam } from 'antd/lib/upload';
+import { UploadFile } from 'antd/lib/upload/interface';
+import React, { useEffect, useRef, useState } from 'react';
 import ReactQuill, { Quill } from 'react-quill';
 import styled from 'styled-components';
+import { SendMessage } from '../typings/common';
 import Toolbar from './Toolbar';
 
 type WriteCommentProps = {
-  chat: string;
-  onChangeChat: (chat: string) => void;
-  onSendMessage: () => void;
+  sendMessage: (message: SendMessage) => void;
 };
 
 const Wrapper = styled.div`
@@ -41,25 +43,52 @@ const StyledWriteComment = styled.div`
       color: white;
     }
   }
+  .ant-upload {
+    display: none;
+  }
 `;
 
-function WriteComment({
-  chat,
-  onChangeChat,
-  onSendMessage,
-}: WriteCommentProps) {
+function WriteComment({ sendMessage }: WriteCommentProps) {
   let quillRef = useRef<ReactQuill | null>(null);
-  let editor = useRef<Quill | null | undefined>(null);
-
-  useEffect(() => {
-    editor.current = quillRef.current?.getEditor();
-  }, []);
+  let editorRef = useRef<Quill | null | undefined>(null);
+  let imageInputRef = useRef<HTMLInputElement | null>(null);
+  const [chat, setChat] = useState('');
+  const [imageList, setImageList] = useState<UploadFile[]>([]);
 
   const modules = {
     toolbar: {
       container: '#toolbar',
     },
   };
+
+  const onSendMessage = async () => {
+    const imageUrls = imageList.map((image) => image.response.url);
+    sendMessage({ chat, imageUrls });
+    setChat('');
+    setImageList([]);
+  };
+
+  const onChangeChat = (chat: string) => {
+    setChat(chat);
+  };
+
+  const onChangeUpload = ({
+    file,
+    fileList,
+  }: UploadChangeParam<UploadFile<any>>) => {
+    if (file.status === 'done') {
+      setImageList(fileList);
+    }
+  };
+
+  useEffect(() => {
+    editorRef.current = quillRef.current?.getEditor();
+    const editor = editorRef.current;
+    const toolbar = editor?.getModule('toolbar');
+    toolbar.addHandler('image', () => {
+      imageInputRef.current?.click();
+    });
+  }, []);
 
   return (
     <Wrapper>
@@ -71,6 +100,16 @@ function WriteComment({
           theme="snow"
           ref={quillRef}
         />
+        <Upload
+          action="http://localhost:3005/image"
+          listType="picture-card"
+          onChange={onChangeUpload}
+          name="img"
+          withCredentials
+          fileList={imageList}
+        >
+          <input hidden ref={imageInputRef} />
+        </Upload>
         <Toolbar onClickSendButton={onSendMessage} />
       </StyledWriteComment>
     </Wrapper>

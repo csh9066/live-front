@@ -9,7 +9,7 @@ import { RootState } from '../modules';
 import { addChat, listChats } from '../modules/channelChats';
 import { toggleAddMemberModal } from '../modules/modal';
 import socket, { SocketEvent } from '../socket';
-import { IMessage } from '../typings/common';
+import { IMessage, SendMessage } from '../typings/common';
 import AddMemberModal from './AddMemberModal';
 
 type ChannelChatContainerProps = {};
@@ -20,7 +20,6 @@ function ChannelChatContainer(props: ChannelChatContainerProps) {
   const channelChats = useSelector((state: RootState) => state.channelChats);
   const channels = useSelector((state: RootState) => state.channels);
   const currentChannel = channels.find((channel) => channel.id === channelId);
-  const [chat, setChat] = useState<string>('');
 
   const dispatch = useDispatch();
 
@@ -33,14 +32,9 @@ function ChannelChatContainer(props: ChannelChatContainerProps) {
     }
   };
 
-  const onChangeChat = (chat: string) => {
-    setChat(chat);
-  };
-
-  const onSendMeesage = async () => {
-    setChat('');
+  const onSendMeesage = async (message: SendMessage) => {
     try {
-      await ChannelsService.sendChannelChat(channelId, chat);
+      await ChannelsService.sendChannelChat(channelId, message);
     } catch (e) {
       console.log(e);
     }
@@ -80,11 +74,7 @@ function ChannelChatContainer(props: ChannelChatContainerProps) {
         onOpenAddMemberModal={onOpenAddMemberModal}
       />
       <ChatView messages={channelChats[channelId]} />
-      <WriteComment
-        chat={chat}
-        onChangeChat={onChangeChat}
-        onSendMessage={onSendMeesage}
-      />
+      <WriteComment sendMessage={onSendMeesage} />
       <AddMemberModal />
     </>
   );

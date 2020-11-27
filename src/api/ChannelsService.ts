@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { SendMessage } from '../typings/common';
 
 const client = axios.create({
   baseURL: `${process.env.REACT_APP_SERVER_PORT}/channels`,
@@ -15,8 +16,8 @@ const ChannelsService = {
   async listChannelChats(id: number) {
     return await client.get(`/${id}/chats`);
   },
-  async sendChannelChat(id: number, content: string) {
-    return await client.post(`/${id}/chats`, { content });
+  async sendChannelChat(id: number, message: SendMessage) {
+    return await client.post(`/${id}/chats`, message);
   },
   async addChannelMembers(id: number, userEmails: string[]) {
     return await client.post(`/${id}/members`, { emails: userEmails });

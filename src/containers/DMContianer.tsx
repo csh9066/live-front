@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import FriendsService from '../api/FriendsService';
@@ -8,7 +8,7 @@ import WriteComment from '../components/WriteComment';
 import { RootState } from '../modules';
 import { listDmByFriendId, addDm } from '../modules/dm';
 import socket, { SocketEvent } from '../socket';
-import { IMessage } from '../typings/common';
+import { IMessage, SendMessage } from '../typings/common';
 
 type DMContianerProps = {};
 
@@ -18,18 +18,15 @@ function DMContianer(props: DMContianerProps) {
   const dm = useSelector((state: RootState) => state.dm);
   const friends = useSelector((state: RootState) => state.friends);
   const currentFriend = friends.find((friend) => friend.id === friendId);
-  const [chat, setChat] = useState<string>('');
 
   const dispatch = useDispatch();
 
-  const onChangeChat = (chat: string) => {
-    setChat(chat);
-  };
-
-  const onSendMessage = async () => {
-    setChat('');
+  const sendMessage = async ({ chat, imageUrls }: SendMessage) => {
     try {
-      const { data } = await FriendsService.sendDm(friendId, chat);
+      const { data } = await FriendsService.sendDm(friendId, {
+        chat,
+        imageUrls,
+      });
       dispatch(addDm(data, friendId));
     } catch (e) {
       console.log(e);
@@ -70,11 +67,7 @@ function DMContianer(props: DMContianerProps) {
     <>
       <DMHeader friendNickName={currentFriend.nickname} />
       <ChatView messages={dm[friendId]} />
-      <WriteComment
-        chat={chat}
-        onChangeChat={onChangeChat}
-        onSendMessage={onSendMessage}
-      />
+      <WriteComment sendMessage={sendMessage} />
     </>
   );
 }

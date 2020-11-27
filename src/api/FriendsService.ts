@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { SendMessage } from '../typings/common';
 
 const client = axios.create({
   baseURL: `${process.env.REACT_APP_SERVER_PORT}/friends`,
@@ -18,8 +19,8 @@ const FriendsService = {
   async listDmByFriendId(friendId: number) {
     return await client.get(`/${friendId}/dm`);
   },
-  async sendDm(reciverId: number, content: string) {
-    return await client.post(`/${reciverId}/dm`, { content });
+  async sendDm(reciverId: number, message: SendMessage) {
+    return await client.post(`/${reciverId}/dm`, message);
   },
 };
 
