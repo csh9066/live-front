@@ -4,6 +4,7 @@ import moment from 'moment';
 import 'moment/locale/ko';
 import styled from 'styled-components';
 import { IMessage } from '../typings/common';
+import ChatImageList from './ChatImageList';
 
 type ChatViewProps = {
   messages: IMessage[];
@@ -79,7 +80,14 @@ function ChatView({ messages }: ChatViewProps) {
               />
             }
             content={
-              <div dangerouslySetInnerHTML={{ __html: message.content }} />
+              <div>
+                <div dangerouslySetInnerHTML={{ __html: message.content }} />
+                {message.images.length > 0 && (
+                  <ChatImageList
+                    imageUrls={message.images.map((image) => image.src)}
+                  />
+                )}
+              </div>
             }
             datetime={
               <span className="comment-date">
