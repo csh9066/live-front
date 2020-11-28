@@ -1,16 +1,18 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import SoicalLogin from './components/SoicalLogin';
-import GlobalStyles from './GlobalStyles';
-import AppPage from './pages/AppPage';
+import AppContainer from './containers/AppContainer';
+import LocalLoginForm from './containers/LocalLoginForm';
 
 function App() {
   return (
     <>
-      <GlobalStyles />
       <Switch>
-        <Route path="/login" render={SoicalLogin} />
-        <Route path="/app" render={AppPage} />
+        <Route path="/" exact component={() => <Redirect to="/app" />} />
+        <Route path="/auth/social" component={SoicalLogin} />
+        <Route path="/auth/local" component={LocalLoginForm} />
+        <Route path="/app" component={AppContainer} />
+        <Route path="*" component={() => <Redirect to="/app" />} />
       </Switch>
     </>
   );

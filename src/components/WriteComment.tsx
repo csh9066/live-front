@@ -75,7 +75,7 @@ function WriteComment({ sendMessage }: WriteCommentProps) {
     const text = editorRef?.current?.getText().trim();
     const haveText = text ? true : false;
 
-    if (isSendable !== haveText) {
+    if (isSendable !== haveText && imageList.length === 0) {
       setIsSendable(haveText);
     }
   };
