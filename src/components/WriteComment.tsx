@@ -54,6 +54,7 @@ function WriteComment({ sendMessage }: WriteCommentProps) {
   let imageInputRef = useRef<HTMLInputElement | null>(null);
   const [chat, setChat] = useState('');
   const [imageList, setImageList] = useState<UploadFile[]>([]);
+  const [isSendable, setIsSendable] = useState(false);
 
   const modules = {
     toolbar: {
@@ -62,23 +63,30 @@ function WriteComment({ sendMessage }: WriteCommentProps) {
   };
 
   const onSendMessage = async () => {
+    if (!isSendable) return;
     const imageUrls = imageList.map((image) => image.response.url);
     sendMessage({ chat, imageUrls });
     setChat('');
     setImageList([]);
   };
 
-  const onChangeChat = (chat: string, delta: any) => {
+  const onChangeChat = (chat: string) => {
     setChat(chat);
+    const text = editorRef?.current?.getText().trim();
+    const haveText = text ? true : false;
+
+    if (isSendable !== haveText) {
+      setIsSendable(haveText);
+    }
   };
 
-  const onChangeUpload = ({
-    file,
-    fileList,
-  }: UploadChangeParam<UploadFile<any>>) => {
-    if (file.status === 'done') {
-      setImageList(fileList);
+  const onChangeUpload = ({ fileList }: UploadChangeParam<UploadFile<any>>) => {
+    const haveImageList = fileList.length > 0;
+    if (haveImageList !== isSendable) {
+      setIsSendable(haveImageList);
     }
+
+    setImageList(fileList);
   };
 
   useEffect(() => {
@@ -135,7 +143,7 @@ function WriteComment({ sendMessage }: WriteCommentProps) {
         >
           <input hidden ref={imageInputRef} />
         </Upload>
-        <Toolbar onClickSendButton={onSendMessage} />
+        <Toolbar onClickSendButton={onSendMessage} isSendable={isSendable} />
       </StyledWriteComment>
     </Wrapper>
   );

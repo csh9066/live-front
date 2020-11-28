@@ -5,6 +5,7 @@ import { Tooltip } from 'antd';
 
 type ToolbarProps = {
   onClickSendButton: () => void;
+  isSendable: boolean;
 };
 
 const StyledToolbar = styled.div`
@@ -28,7 +29,7 @@ const TooltipText = styled.div`
   }
 `;
 
-function Toolbar({ onClickSendButton }: ToolbarProps) {
+function Toolbar({ onClickSendButton, isSendable }: ToolbarProps) {
   return (
     <StyledToolbar id="toolbar">
       <div>
@@ -53,7 +54,11 @@ function Toolbar({ onClickSendButton }: ToolbarProps) {
       <div className="right">
         <button
           id="chatSubmitBtn"
-          style={{ backgroundColor: '#007a5a' }}
+          style={
+            isSendable
+              ? { backgroundColor: '#007a5a' }
+              : { backgroundColor: 'transparent' }
+          }
           onClick={onClickSendButton}
         >
           <FaPaperPlane className="tooblar-pp" />
