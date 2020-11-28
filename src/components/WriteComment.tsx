@@ -68,7 +68,7 @@ function WriteComment({ sendMessage }: WriteCommentProps) {
     setImageList([]);
   };
 
-  const onChangeChat = (chat: string) => {
+  const onChangeChat = (chat: string, delta: any) => {
     setChat(chat);
   };
 
@@ -84,6 +84,31 @@ function WriteComment({ sendMessage }: WriteCommentProps) {
   useEffect(() => {
     editorRef.current = quillRef.current?.getEditor();
     const editor = editorRef.current;
+    const submitBtn = document.getElementById('chatSubmitBtn');
+    const keyboard = editor?.getModule('keyboard');
+    delete keyboard.bindings[13];
+
+    editor?.keyboard.addBinding(
+      {
+        key: 'Enter',
+      },
+      () => {
+        submitBtn?.click();
+      }
+    );
+
+    editor?.keyboard.addBinding(
+      {
+        key: 'Enter',
+      },
+      {
+        shiftKey: true,
+      },
+      (range) => {
+        editor.insertText(range.index, '\n');
+      }
+    );
+
     const toolbar = editor?.getModule('toolbar');
     toolbar.addHandler('image', () => {
       imageInputRef.current?.click();

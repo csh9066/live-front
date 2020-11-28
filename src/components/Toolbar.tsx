@@ -52,6 +52,7 @@ function Toolbar({ onClickSendButton }: ToolbarProps) {
       </div>
       <div className="right">
         <button
+          id="chatSubmitBtn"
           style={{ backgroundColor: '#007a5a' }}
           onClick={onClickSendButton}
         >
