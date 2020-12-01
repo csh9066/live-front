@@ -22,10 +22,6 @@ const StyledChatView = styled.div`
     justify-content: flex-end;
   }
 
-  p {
-    line-height: 1.5;
-  }
-
   // antd custom
   .ant-divider-inner-text {
     transform: translateY(50%);
@@ -37,6 +33,25 @@ const StyledChatView = styled.div`
 `;
 
 const StyledChatComment = styled(Comment)`
+  line-height: 1.5;
+  code {
+    background-color: #f0f0f0;
+    border-radius: 3px;
+  }
+  li {
+    display: list-item;
+  }
+  ol,
+  ul {
+    padding-left: 1.5em;
+  }
+  ol > li {
+    list-style: decimal;
+  }
+  ul > li {
+    list-style: disc;
+  }
+
   &:hover {
     background-color: #f0f0f0;
   }
