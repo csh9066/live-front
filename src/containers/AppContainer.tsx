@@ -25,7 +25,7 @@ function AppContainer(props: AppContainerProps) {
       dispatch(check(data));
       socket.emit(SocketEvent.ONLINE, data.id);
     } catch (e) {
-      history.push('/auth/social');
+      history.push('/');
     }
   };
 
