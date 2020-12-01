@@ -1,6 +1,7 @@
 import { Layout } from 'antd';
 import React from 'react';
 import styled from 'styled-components';
+import HeaderContainer from '../containers/HeaderContainer';
 import SideBar from './SideBar';
 
 type AppLayoutProps = {
@@ -23,8 +24,11 @@ function AppLayout({ children }: AppLayoutProps) {
   return (
     <>
       <StyledLayout>
-        <SideBar />
-        <Layout>{children}</Layout>
+        <HeaderContainer />
+        <Layout>
+          <SideBar />
+          <Layout>{children}</Layout>
+        </Layout>
       </StyledLayout>
     </>
   );
