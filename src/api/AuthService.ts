@@ -12,6 +12,9 @@ const AuthService = {
   async logout() {
     return await client.get('/logout');
   },
+  async localLogin(info: { email: string; password: string }) {
+    return await client.post('/local/login', info);
+  },
 };
 
 export default AuthService;

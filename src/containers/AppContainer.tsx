@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, Route, Switch, useHistory } from 'react-router-dom';
+import { Route, Switch, useHistory } from 'react-router-dom';
 import AuthService from '../api/AuthService';
 import AppLayout from '../components/AppLayout';
 import GlobalStyles from '../GlobalStyles';
@@ -41,11 +41,6 @@ function AppContainer(props: AppContainerProps) {
       <GlobalStyles />
       <Switch>
         <AppLayout>
-          <Route
-            path="/app"
-            exact
-            component={() => <Link to="/">인덱스</Link>}
-          />
           <Route path="/app/friends/:id" component={DMContianer} />
           <Route path="/app/channels/:id" component={ChannelChatContainer} />
         </AppLayout>

@@ -2,6 +2,7 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 import { FcGoogle } from 'react-icons/fc';
 import { FaFacebookF } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 type SoicalLoginProps = {};
 
@@ -89,7 +90,11 @@ function SoicalLogin(props: SoicalLoginProps) {
           <p> 환영합니다!</p>
           <p>
             현재는 소셜 로그인만 지원하고 있습니다. <br />
-            테스트 아이디를 사용하실려면 여기를 클릭해주세요
+            테스트 아이디를 사용하실려면{' '}
+            <Link to="/auth/test" style={{ textDecoration: 'underline' }}>
+              여기
+            </Link>
+            를 클릭해주세요
           </p>
         </div>
         <div className="social-buttons">
