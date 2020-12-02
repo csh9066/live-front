@@ -9,7 +9,7 @@ import { RootState } from '../modules';
 import { addChat, listChats } from '../modules/channelChats';
 import { toggleAddMemberModal } from '../modules/modal';
 import socket, { SocketEvent } from '../socket';
-import { IMessage, SendMessage } from '../typings/common';
+import { IChat, SendMessage } from '../typings/common';
 import AddMemberModal from './AddMemberModal';
 
 type ChannelChatContainerProps = {};
@@ -48,7 +48,7 @@ function ChannelChatContainer(props: ChannelChatContainerProps) {
     message,
     channelId,
   }: {
-    message: IMessage;
+    message: IChat;
     channelId: number;
   }) => {
     dispatch(addChat(message, channelId));

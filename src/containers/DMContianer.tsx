@@ -8,7 +8,7 @@ import WriteComment from '../components/WriteComment';
 import { RootState } from '../modules';
 import { listDmByFriendId, addDm } from '../modules/dm';
 import socket, { SocketEvent } from '../socket';
-import { IMessage, SendMessage } from '../typings/common';
+import { IChat, SendMessage } from '../typings/common';
 
 type DMContianerProps = {};
 
@@ -46,7 +46,7 @@ function DMContianer(props: DMContianerProps) {
     message,
     senderId,
   }: {
-    message: IMessage;
+    message: IChat;
     senderId: number;
   }) => {
     dispatch(addDm(message, senderId));

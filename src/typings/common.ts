@@ -1,6 +1,6 @@
 import { IUser } from '../modules/user';
 
-export interface IMessage {
+export interface IChat {
   id: number;
   content: string;
   sender: IUser;

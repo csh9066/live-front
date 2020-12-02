@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IMessage } from '../typings/common';
+import { IChat } from '../typings/common';
 
 interface IChatState {
-  [channelId: number]: IMessage[];
+  [channelId: number]: IChat[];
 }
 
 const initialState: IChatState = {};
@@ -12,10 +12,10 @@ const channelChats = createSlice({
   initialState,
   reducers: {
     listChats: {
-      reducer(state, action: PayloadAction<IMessage[], string, number>) {
+      reducer(state, action: PayloadAction<IChat[], string, number>) {
         state[action.meta] = action.payload;
       },
-      prepare(payload: IMessage[], channelId: number) {
+      prepare(payload: IChat[], channelId: number) {
         return {
           payload,
           meta: channelId,
@@ -23,12 +23,12 @@ const channelChats = createSlice({
       },
     },
     addChat: {
-      reducer(state, action: PayloadAction<IMessage, string, number>) {
+      reducer(state, action: PayloadAction<IChat, string, number>) {
         if (state[action.meta]) {
           state[action.meta].push(action.payload);
         }
       },
-      prepare(payload: IMessage, channelId: number) {
+      prepare(payload: IChat, channelId: number) {
         return {
           payload,
           meta: channelId,

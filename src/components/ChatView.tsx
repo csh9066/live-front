@@ -3,11 +3,11 @@ import React from 'react';
 import moment from 'moment';
 import 'moment/locale/ko';
 import styled from 'styled-components';
-import { IMessage } from '../typings/common';
+import { IChat } from '../typings/common';
 import ChatImageList from './ChatImageList';
 
 type ChatViewProps = {
-  messages: IMessage[];
+  messages: IChat[];
 };
 
 const StyledChatView = styled.div`
