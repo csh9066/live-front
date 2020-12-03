@@ -61,6 +61,9 @@ const channels = createSlice({
         };
       },
     },
+    initializeChannels(state) {
+      state.splice(0);
+    },
   },
 });
 
@@ -72,4 +75,5 @@ export const {
   removeChannel,
   addChannelMembers,
   removeChannelMember,
+  initializeChannels,
 } = channels.actions;

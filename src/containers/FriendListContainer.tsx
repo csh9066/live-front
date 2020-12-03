@@ -11,6 +11,7 @@ import {
   onlineFriends,
   onlineFriend,
   offlineFriend,
+  initializeFriends,
 } from '../modules/friends';
 import { toggleAddFriendModal } from '../modules/modal';
 import { IUser } from '../modules/user';
@@ -67,6 +68,10 @@ function FriendListContainer(props: FriendListContainerProps) {
     socket.on(SocketEvent.REMOVE_FRIEND, (friendId: number) => {
       dispatch(removeFriend(friendId));
     });
+
+    return () => {
+      dispatch(initializeFriends());
+    };
     // eslint-disable-next-line
   }, []);
 

@@ -10,6 +10,7 @@ import {
   listChannels,
   removeChannel,
   removeChannelMember,
+  initializeChannels,
 } from '../modules/channels';
 import { toggleChannelModal } from '../modules/modal';
 import socket, { SocketEvent } from '../socket';
@@ -69,6 +70,10 @@ function ChannelListContainer(props: ChannelListContainerProps) {
         dispatch(removeChannelMember(memberId, channelId));
       }
     );
+
+    return () => {
+      dispatch(initializeChannels());
+    };
     //eslint-disable-next-line
   }, []);
 

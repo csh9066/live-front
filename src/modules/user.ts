@@ -11,12 +11,10 @@ export interface IUser {
 
 interface IUserState {
   user: IUser | null;
-  isAuthenticated: boolean;
 }
 
 const initialState: IUserState = {
   user: null,
-  isAuthenticated: false,
 };
 
 const user = createSlice({
@@ -25,10 +23,8 @@ const user = createSlice({
   reducers: {
     logout: (state) => {
       state.user = null;
-      state.isAuthenticated = false;
     },
     check: (state, action: PayloadAction<IUser>) => {
-      state.isAuthenticated = true;
       state.user = action.payload;
     },
   },

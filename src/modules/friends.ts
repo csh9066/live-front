@@ -48,6 +48,9 @@ const friends = createSlice({
       );
       state[friendIdx].online = false;
     },
+    initializeFriends(state) {
+      state.splice(0);
+    },
   },
 });
 
@@ -60,4 +63,5 @@ export const {
   onlineFriends,
   onlineFriend,
   offlineFriend,
+  initializeFriends,
 } = friends.actions;
