@@ -2,11 +2,11 @@ import React from 'react';
 import Menu from './Menu';
 import MenuItem from './MenuItem';
 import { TiPlus } from 'react-icons/ti';
-import { Avatar } from 'antd';
+import { Avatar, Badge } from 'antd';
 import { Link } from 'react-router-dom';
 import { IFriend } from '../modules/friends';
 import confirm from 'antd/lib/modal/confirm';
-import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { ExclamationCircleOutlined, UserOutlined } from '@ant-design/icons';
 
 type FriendListProps = {
   friends: IFriend[];
@@ -39,11 +39,17 @@ function FriendList({
               showRemoveFriendConfirm(friend.id);
             }}
             icon={
-              friend.profileImageUrl ? (
-                <Avatar src={friend.profileImageUrl} shape="square" />
-              ) : (
-                <Avatar shape="square">{friend.nickname[0]}</Avatar>
-              )
+              <Badge
+                dot
+                offset={[0, 20]}
+                status={friend.online ? 'success' : 'default'}
+              >
+                {friend.profileImageUrl ? (
+                  <Avatar src={friend.profileImageUrl} shape="square" />
+                ) : (
+                  <Avatar shape="square" icon={<UserOutlined />} />
+                )}
+              </Badge>
             }
           />
         </Link>
