@@ -30,9 +30,15 @@ function AppContainer(props: AppContainerProps) {
 
   useEffect(() => {
     authenticate();
-    socket.on(SocketEvent.ONLINE, () => {
-      setSocketSession(true);
+    socket.connect();
+    socket.on('connect', () => {
+      socket.on(SocketEvent.ONLINE, () => {
+        setSocketSession(true);
+      });
     });
+    return () => {
+      socket.close();
+    };
     // eslint-disable-next-line
   }, []);
 

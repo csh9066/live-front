@@ -18,6 +18,7 @@ export enum SocketEvent {
 
 const socket = io(`${process.env.REACT_APP_SERVER_PORT}`, {
   transports: ['websocket'],
+  autoConnect: false,
 });
 
 export default socket;
