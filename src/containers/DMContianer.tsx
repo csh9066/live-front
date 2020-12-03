@@ -42,14 +42,8 @@ function DMContianer(props: DMContianerProps) {
     }
   };
 
-  const reciveDm = async ({
-    message,
-    senderId,
-  }: {
-    message: IChat;
-    senderId: number;
-  }) => {
-    dispatch(addDm(message, senderId));
+  const reciveDm = async (message: IChat) => {
+    dispatch(addDm(message, message.sender.id));
   };
 
   useEffect(() => {
