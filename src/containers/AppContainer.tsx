@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Route, Switch, useHistory } from 'react-router-dom';
 import AuthService from '../api/AuthService';
 import AppLayout from '../components/AppLayout';
 import GlobalStyles from '../GlobalStyles';
-import { RootState } from '../modules';
 import { check, IUser } from '../modules/user';
 import socket, { SocketEvent } from '../socket';
 import AddChannelModal from './AddChannelModal';
@@ -15,7 +14,7 @@ import DMContianer from './DMContianer';
 type AppContainerProps = {};
 
 function AppContainer(props: AppContainerProps) {
-  const user = useSelector((state: RootState) => state.user.user);
+  const [socketSession, setSocketSession] = useState(false);
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -31,10 +30,13 @@ function AppContainer(props: AppContainerProps) {
 
   useEffect(() => {
     authenticate();
+    socket.on(SocketEvent.ONLINE, () => {
+      setSocketSession(true);
+    });
     // eslint-disable-next-line
   }, []);
 
-  if (!user) return null;
+  if (!socketSession) return null;
 
   return (
     <>

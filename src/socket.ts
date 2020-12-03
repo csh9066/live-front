@@ -2,6 +2,9 @@ import { io } from 'socket.io-client';
 
 export enum SocketEvent {
   ONLINE = 'ONLINE',
+  ONLINE_FRIEND = 'ONLINE_FRIEND',
+  ONLINE_FRIENDS = 'ONLINE_FRIENDS',
+  OFFLINE_FRIEND = 'OFFLINE_FRIEND',
   DM = 'DM',
   CHANNEL_CHAT = 'CHANNEL_CHAT',
   JOIN_CHANNELS = 'JOIN_CHANNELS',

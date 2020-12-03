@@ -4,7 +4,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import FriendsService from '../api/FriendsService';
 import FriendList from '../components/FriendList';
 import { RootState } from '../modules';
-import { addFriend, listFriends, removeFriend } from '../modules/friends';
+import {
+  addFriend,
+  listFriends,
+  removeFriend,
+  onlineFriends,
+  onlineFriend,
+  offlineFriend,
+} from '../modules/friends';
 import { toggleAddFriendModal } from '../modules/modal';
 import { IUser } from '../modules/user';
 import socket, { SocketEvent } from '../socket';
@@ -13,6 +20,7 @@ type FriendListContainerProps = {};
 
 function FriendListContainer(props: FriendListContainerProps) {
   const friends = useSelector((state: RootState) => state.friends);
+  const user = useSelector((state: RootState) => state.user.user);
 
   const dispatch = useDispatch();
 
@@ -20,6 +28,7 @@ function FriendListContainer(props: FriendListContainerProps) {
     try {
       const response = await FriendsService.listFriends();
       dispatch(listFriends(response.data));
+      socket.emit(SocketEvent.ONLINE_FRIENDS, user?.id);
     } catch (e) {
       message.error(e.resopnse.data);
     }
@@ -43,6 +52,15 @@ function FriendListContainer(props: FriendListContainerProps) {
 
   useEffect(() => {
     fetchFriends();
+    socket.on(SocketEvent.ONLINE_FRIENDS, (friendIds: number[]) => {
+      dispatch(onlineFriends(friendIds));
+    });
+    socket.on(SocketEvent.ONLINE_FRIEND, (friendId: number) => {
+      dispatch(onlineFriend(friendId));
+    });
+    socket.on(SocketEvent.OFFLINE_FRIEND, (friendId: number) => {
+      dispatch(offlineFriend(friendId));
+    });
     socket.on(SocketEvent.ADD_FRIEND, (friend: IUser) => {
       dispatch(addFriend(friend));
     });
