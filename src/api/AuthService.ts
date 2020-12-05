@@ -1,19 +1,14 @@
-import axios from 'axios';
-
-const client = axios.create({
-  baseURL: `${process.env.REACT_APP_SERVER_PORT}/auth`,
-  withCredentials: true,
-});
+import client from './client';
 
 const AuthService = {
   async check() {
-    return await client.get('/check');
+    return await client.get('auth/check');
   },
   async logout() {
-    return await client.get('/logout');
+    return await client.get('auth/logout');
   },
   async localLogin(info: { email: string; password: string }) {
-    return await client.post('/local/login', info);
+    return await client.post('auth/local/login', info);
   },
 };
 

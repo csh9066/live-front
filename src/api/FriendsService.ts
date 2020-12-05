@@ -1,26 +1,21 @@
-import axios from 'axios';
 import { SendMessage } from '../typings/common';
-
-const client = axios.create({
-  baseURL: `${process.env.REACT_APP_SERVER_PORT}/friends`,
-  withCredentials: true,
-});
+import client from './client';
 
 const FriendsService = {
   async listFriends() {
-    return await client.get('/');
+    return await client.get('friends/');
   },
   async addFriendByEmail(email: string) {
-    return await client.post(`/`, { email });
+    return await client.post(`friends/`, { email });
   },
   async removeFriend(friendId: number) {
-    return await client.delete(`/${friendId}`);
+    return await client.delete(`friends/${friendId}`);
   },
   async listDmByFriendId(friendId: number) {
-    return await client.get(`/${friendId}/dm`);
+    return await client.get(`friends/${friendId}/dm`);
   },
   async sendDm(reciverId: number, message: SendMessage) {
-    return await client.post(`/${reciverId}/dm`, message);
+    return await client.post(`friends/${reciverId}/dm`, message);
   },
 };
 
