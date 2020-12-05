@@ -63,7 +63,11 @@ function FriendListContainer(props: FriendListContainerProps) {
       dispatch(offlineFriend(friendId));
     });
     socket.on(SocketEvent.ADD_FRIEND, (friend: IUser) => {
-      dispatch(addFriend(friend));
+      const onlineFriend = {
+        ...friend,
+        online: true,
+      };
+      dispatch(addFriend(onlineFriend));
     });
     socket.on(SocketEvent.REMOVE_FRIEND, (friendId: number) => {
       dispatch(removeFriend(friendId));
