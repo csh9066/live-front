@@ -33,7 +33,7 @@ function Header({ onLogout, user }: HeaderProps) {
             <Menu.Item onClick={onLogout}>로그 아웃</Menu.Item>
           </Menu>
         }
-        trigger={['click']}
+        trigger={['hover']}
       >
         {user?.profileImageUrl ? (
           <UserMenu shape="square" src={user.profileImageUrl} />
