@@ -72,6 +72,8 @@ function ChannelListContainer(props: ChannelListContainerProps) {
     );
 
     return () => {
+      socket.off(SocketEvent.ADD_CHANNEL);
+      socket.off(SocketEvent.LEAVE_CHANNEL_MEMBER);
       dispatch(initializeChannels());
     };
     //eslint-disable-next-line

@@ -31,8 +31,8 @@ function AppContainer(props: AppContainerProps) {
   useEffect(() => {
     authenticate();
     socket.connect();
-    socket.on('connect', () => {
-      socket.on(SocketEvent.ONLINE, () => {
+    socket.once('connect', () => {
+      socket.once(SocketEvent.ONLINE, () => {
         setSocketSession(true);
       });
     });
