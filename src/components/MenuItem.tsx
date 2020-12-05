@@ -47,7 +47,6 @@ const StyledMenuitem = styled.li`
         display: flex;
         justify-content: center;
         align-items: center;
-        background-color: #1890ff;
       }
 
       .ant-badge {
