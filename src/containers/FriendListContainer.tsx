@@ -53,7 +53,7 @@ function FriendListContainer(props: FriendListContainerProps) {
 
   useEffect(() => {
     fetchFriends();
-    socket.once(SocketEvent.ONLINE_FRIENDS, (friendIds: number[]) => {
+    socket.on(SocketEvent.ONLINE_FRIENDS, (friendIds: number[]) => {
       dispatch(onlineFriends(friendIds));
     });
     socket.on(SocketEvent.ONLINE_FRIEND, (friendId: number) => {
@@ -74,6 +74,7 @@ function FriendListContainer(props: FriendListContainerProps) {
     });
 
     return () => {
+      socket.off(SocketEvent.ONLINE_FRIENDS);
       socket.off(SocketEvent.ONLINE_FRIEND);
       socket.off(SocketEvent.OFFLINE_FRIEND);
       socket.off(SocketEvent.ADD_FRIEND);
