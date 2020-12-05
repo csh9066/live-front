@@ -5,11 +5,14 @@ import FriendsService from '../api/FriendsService';
 import { RootState } from '../modules';
 import { addFriend } from '../modules/friends';
 import { toggleAddFriendModal } from '../modules/modal';
+import socket, { SocketEvent } from '../socket';
 
 type AddFrinedModalProps = {};
 
 function AddFrinedModal(props: AddFrinedModalProps) {
   const [email, setEmail] = useState('');
+  const user = useSelector((state: RootState) => state.user.user);
+
   const visible = useSelector(
     (state: RootState) => state.modal.addFriendModalVisible
   );
@@ -25,6 +28,7 @@ function AddFrinedModal(props: AddFrinedModalProps) {
       const { data } = await FriendsService.addFriendByEmail(email);
       dispatch(addFriend(data));
       dispatch(toggleAddFriendModal());
+      socket.emit(SocketEvent.ONLINE_FRIENDS, user?.id);
     } catch (e) {
       message.error(e.response.data);
     }
