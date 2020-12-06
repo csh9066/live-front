@@ -36,6 +36,7 @@ const StyledHeader = styled.header`
   .header-menu {
     display: none;
     position: absolute;
+    z-index: 1;
     top: 38px;
     right: 16px;
     border: 1px solid #c1b6c0;
