@@ -13,6 +13,7 @@ import {
   offlineFriend,
   initializeFriends,
 } from '../modules/friends';
+import { removeDm } from '../modules/dm';
 import { toggleAddFriendModal } from '../modules/modal';
 import { IUser } from '../modules/user';
 import socket, { SocketEvent } from '../socket';
@@ -46,6 +47,7 @@ function FriendListContainer(props: FriendListContainerProps) {
     try {
       await FriendsService.removeFriend(friendId);
       dispatch(removeFriend(friendId));
+      dispatch(removeDm(friendId));
     } catch (e) {
       console.log(e);
     }

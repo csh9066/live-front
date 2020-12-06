@@ -24,7 +24,9 @@ const dm = createSlice({
     },
     addDm: {
       reducer(state, action: PayloadAction<IChat, string, number>) {
-        state[action.meta].push(action.payload);
+        if (state[action.meta]) {
+          state[action.meta].push(action.payload);
+        }
       },
       prepare(payload: IChat, friendId: number) {
         return {
@@ -33,9 +35,14 @@ const dm = createSlice({
         };
       },
     },
+    removeDm(state, action: PayloadAction<number>) {
+      if (state[action.payload]) {
+        delete state[action.payload];
+      }
+    },
   },
 });
 
 export default dm;
 
-export const { listDmByFriendId, addDm } = dm.actions;
+export const { listDmByFriendId, addDm, removeDm } = dm.actions;
