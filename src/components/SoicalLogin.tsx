@@ -106,7 +106,11 @@ function SoicalLogin(props: SoicalLoginProps) {
           </SocialButton>
           <SocialButton type="google">
             <FcGoogle className="icon" />
-            <span className="text">Google로 로그인 하기</span>
+            <span className="text">
+              <a href="http://localhost:3005/auth/google" className="text">
+                Google로 로그인 하기
+              </a>
+            </span>
           </SocialButton>
         </div>
       </Wrapper>
