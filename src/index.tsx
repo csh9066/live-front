@@ -13,7 +13,7 @@ import App from './App';
 
 const store = configureStore({
   reducer: rootReducer,
-  devTools: true,
+  devTools: process.env.NODE_ENV === 'production' ? false : true,
 });
 
 ReactDOM.render(
