@@ -16,12 +16,9 @@ export enum SocketEvent {
   REMOVE_FRIEND = 'REMOVE_FRIEND',
 }
 
-const socket = io(
-  `http://ec2-15-164-118-202.ap-northeast-2.compute.amazonaws.com:3005/`,
-  {
-    transports: ['websocket'],
-    autoConnect: false,
-  }
-);
+const socket = io(`${process.env.REACT_APP_SERVER_URL}`, {
+  transports: ['websocket'],
+  autoConnect: false,
+});
 
 export default socket;

@@ -100,14 +100,20 @@ function SoicalLogin(props: SoicalLoginProps) {
         <div className="social-buttons">
           <SocialButton type="facebook">
             <FaFacebookF className="icon" />
-            <a href="http://localhost:3005/auth/facebook" className="text">
+            <a
+              href={`${process.env.REACT_APP_SERVER_URL}/auth/facebook`}
+              className="text"
+            >
               Facebook로 로그인 하기
             </a>
           </SocialButton>
           <SocialButton type="google">
             <FcGoogle className="icon" />
             <span className="text">
-              <a href="http://localhost:3005/auth/google" className="text">
+              <a
+                href={`${process.env.REACT_APP_SERVER_URL}/auth/google`}
+                className="text"
+              >
                 Google로 로그인 하기
               </a>
             </span>
