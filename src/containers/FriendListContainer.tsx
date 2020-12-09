@@ -17,12 +17,14 @@ import { removeDm } from '../modules/dm';
 import { toggleAddFriendModal } from '../modules/modal';
 import { IUser } from '../modules/user';
 import socket, { SocketEvent } from '../socket';
+import { useHistory } from 'react-router-dom';
 
 type FriendListContainerProps = {};
 
 function FriendListContainer(props: FriendListContainerProps) {
   const friends = useSelector((state: RootState) => state.friends);
   const user = useSelector((state: RootState) => state.user.user);
+  const history = useHistory();
 
   const dispatch = useDispatch();
 
@@ -48,6 +50,7 @@ function FriendListContainer(props: FriendListContainerProps) {
       await FriendsService.removeFriend(friendId);
       dispatch(removeFriend(friendId));
       dispatch(removeDm(friendId));
+      history.goBack();
     } catch (e) {
       console.log(e);
     }

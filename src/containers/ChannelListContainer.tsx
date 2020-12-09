@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import ChannelsService from '../api/ChannelsService';
 import ChannelList from '../components/ChannelList';
 import { RootState } from '../modules';
@@ -20,6 +21,7 @@ type ChannelListContainerProps = {};
 function ChannelListContainer(props: ChannelListContainerProps) {
   const channels = useSelector((state: RootState) => state.channels);
   const user = useSelector((state: RootState) => state.user.user);
+  const history = useHistory();
 
   const dispatch = useDispatch();
 
@@ -37,6 +39,7 @@ function ChannelListContainer(props: ChannelListContainerProps) {
       dispatch(removeChannel(channelId));
       dispatch(removeChat(channelId));
       socket.emit(SocketEvent.REMOVE_CHANNEL, channelId);
+      history.goBack();
     } catch (e) {
       console.log(e);
     }
