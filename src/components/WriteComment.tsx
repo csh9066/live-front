@@ -134,7 +134,7 @@ function WriteComment({ sendMessage }: WriteCommentProps) {
           ref={quillRef}
         />
         <Upload
-          action={`${process.env.REACT_APP_SERVER_URL}/image`}
+          action={`${process.env.REACT_APP_API_URL}/image`}
           listType="picture-card"
           onChange={onChangeUpload}
           name="img"

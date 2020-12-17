@@ -16,7 +16,7 @@ export enum SocketEvent {
   REMOVE_FRIEND = 'REMOVE_FRIEND',
 }
 
-const socket = io(`${process.env.REACT_APP_SERVER_URL}`, {
+const socket = io(`${process.env.REACT_APP_API_URL}`, {
   transports: ['websocket'],
   autoConnect: false,
 });
